@@ -30,12 +30,6 @@ cp ./.bashrc ~
 cp ./.vimrc ~
 cp ./.nanorc ~
 
-# Clones the syntax highlighting config files from @scopatz
-cd ~
-mkdir .nano
-cd .nano
-git clone https://github.com/scopatz/nanorc
-
 # Installs mysql:
 echo "Installing mariadb..."
 apt install mariadb -y
