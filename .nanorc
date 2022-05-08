@@ -1,0 +1,33 @@
+# This is my own nano config file.
+# Author: Jakku Night (8 - 5 - 2022)
+
+# Autoindent:
+set autoindent
+
+# Line numbers:
+set linenumbers
+
+# Autoclosing:
+set brackets "’)>]}\"" 
+
+# Set cursor to the last position:
+set positionlog
+
+# Indicator:
+set indicator (urubuve
+
+# Autosave:
+set backup
+set saveonexit
+
+# Disable line wrap:
+set nowrap
+
+# Set tabsize:
+set tabsize 4
+
+# Enable mouse:
+set mouse
+
+# Syntax Highlighting:
+include ~/.nano/nanorc/*.nanorc
