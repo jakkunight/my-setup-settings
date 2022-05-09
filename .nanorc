@@ -14,10 +14,11 @@ set brackets "’)>]}\""
 set positionlog
 
 # Indicator:
-set indicator (urubuve
+set indicator
 
 # Autosave:
 set backup
+set backupdir ~/
 set saveonexit
 
 # Disable line wrap:
