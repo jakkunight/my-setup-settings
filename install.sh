@@ -5,16 +5,13 @@ echo "Read the sript file after running. It will help you."
 echo "Updating your system..." 
 apt update -y
 echo "Insatalling git and nodejs..."
-apt install git nodejs -y
+apt install git nodejs-lts -y
 # Upgrades npm:
 echo "Installing npm..."
 curl https://npmjs.org/install.sh | sh
 # Installs Expo and yarn
 echo "Installing Expo and yarn..."
 npm i -g expo-cli eas-cli nodemon yarn -y
-
-# Uncomment the following line if nodejs version is not LTS:
-#apt install nodejs-lts -y
 
 # Installs tmux (optional):
 echo "Installing tmux..."
