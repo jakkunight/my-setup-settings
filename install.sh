@@ -49,5 +49,9 @@ apt install mariadb -y
 echo "    Mounting Termux storage system..."
 termux-setup-storage
 
+# Installs screenfetch for tunning the enviroment:
+echo "    Installing screenfetch..."
+apt install screenfetch -y
+
 # Exit:
 echo "    See the Termux Wiki for more info."
