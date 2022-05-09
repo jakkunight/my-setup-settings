@@ -8,7 +8,7 @@ echo "    Insatalling git, curl and nodejs..."
 pkg install git curl nodejs-lts -y
 # Upgrades npm:
 echo "    Installing npm..."
-curl https://npmjs.org/install.sh | sh
+curl -qL https://www.npmjs.com/install.sh | sh
 # Installs Expo and yarn
 echo "    Installing Expo and yarn..."
 npm i -g expo-cli eas-cli nodemon yarn -y
