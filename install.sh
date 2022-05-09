@@ -23,17 +23,23 @@ apt install vim -y
 
 # Clones the config files into your root folder:
 echo "    Replacing config files for vim, bash and nano..."
-cp ./.bashrc ~
-cp ./.vimrc ~
-cp ./.nanorc ~
+cp -f ./.bashrc ~
+cp -f ./.vimrc ~
+cp -f ./.nanorc ~
 
 # Clones the syntax highlighting config files from @scopatz
 echo "    Cloning syntax highlighting config files and creating nano backup dir..."
 cd ~
-mkdir .nano
+if [ ! -d .nano ] then
+	mkdir .nano
+fi
 cd .nano
-mkdir backups
-git clone https://github.com/scopatz/nanorc
+if [ ! -d backups ] then
+	mkdir backups
+fi
+if [ !-d nanorc ] then
+	git clone https://github.com/scopatz/nanorc
+fi
 
 # Installs mysql:
 echo "    Installing mariadb..."
