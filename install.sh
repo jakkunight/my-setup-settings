@@ -31,6 +31,7 @@ cp ./.nanorc ~
 cd ~
 mkdir .nano
 cd .nano
+mkdir backups
 git clone https://github.com/scopatz/nanorc
 
 # Installs mysql:
