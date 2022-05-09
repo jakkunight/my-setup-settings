@@ -39,7 +39,7 @@ if [ ! -d backups ]
 then
 	mkdir backups
 fi
-if [ !-d nanorc ]
+if [ ! -d nanorc ]
 then
 	git clone https://github.com/scopatz/nanorc
 fi
