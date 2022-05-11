@@ -4,6 +4,10 @@ echo "    Read the sript file after running. It will help you."
 # Setups the nodejs/expo/git basic enviroment:
 echo "    Updating your system..."
 pkg update -y
+echo "    Installing PRoot to make Termux more like a true Linux distro..."
+pkg install proot
+echo "    Mounting Termux Linux-like enviroment..."
+termux-chroot
 echo "    Insatalling git, curl and nodejs..."
 pkg install git curl nodejs-lts -y
 # Upgrades npm:
