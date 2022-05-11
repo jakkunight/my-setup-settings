@@ -8,8 +8,8 @@ echo "    Installing PRoot to make Termux more like a true Linux distro..."
 pkg install proot
 echo "    Mounting Termux Linux-like enviroment..."
 termux-chroot
-echo "    Insatalling git, curl and nodejs..."
-pkg install git curl nodejs-lts -y
+echo "    Insatalling git, curl, wget, sqlite and nodejs..."
+pkg install git curl wget sqlite nodejs-lts -y
 # Upgrades npm:
 echo "    Installing npm..."
 curl -qL https://www.npmjs.com/install.sh | sh
