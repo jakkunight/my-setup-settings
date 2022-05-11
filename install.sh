@@ -21,6 +21,11 @@ pkg install tmux -y
 echo "    Installing vim..."
 pkg install vim -y
 
+# Downloads 'vim-plug' to add and install plugins to vim:
+echo "    Downloading and installing 'vim-plug'..."
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+		    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 # Clones the config files into your root folder:
 echo "    Replacing config files for vim, bash and nano..."
 cp -f ./.bashrc ~
