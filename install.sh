@@ -55,5 +55,16 @@ pkg install screenfetch -y
 echo "    Installing htop..."
 pkg install htop -y
 
+# WARNING: ROOT ZONE!!!
+# Asks for root and tries to setup your enviroment according to this:
+echo "    Are you a ROOT USER (aka: SUPER USER or ADMINISTRATOR) [y|N]?"
+read is_rooted
+if [ $is_rooted == "y" || $is_rooted == "Y" ]
+then
+        pkg install root-repo -y
+        pkg install tsu -y
+        echo "    You have SUPER USER PERMISIONS NOW! USE IT WISELY!!!"
+fi
+
 # Exit:
 echo "    See the Termux Wiki for more info."
