@@ -51,5 +51,9 @@ termux-setup-storage
 echo "    Installing screenfetch..."
 pkg install screenfetch -y
 
+# Installs htop for control how much RAM are we consuming:
+echo "    Installing htop..."
+pkg install htop -y
+
 # Exit:
 echo "    See the Termux Wiki for more info."
