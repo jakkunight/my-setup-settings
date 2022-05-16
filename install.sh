@@ -22,7 +22,7 @@ then
 		touch ~/.bashrc
 	fi
 	echo "sudo /data/data/com.offsec.nethunter/files/scripts/bootkali" >> ~/.bashrc
-fi
+else
 	# Setups the nodejs/expo/git basic enviroment:
 	echo "    Insatalling git, curl, wget, sqlite and nodejs..."
 	pkg install git curl wget sqlite nodejs-lts -y
@@ -74,6 +74,7 @@ fi
 	# Installs htop for control how much RAM are we consuming:
 	echo "    Installing htop..."
 	pkg install htop -y
+fi
 
 # Exit:
-echo "    See the Termux Wiki for more info."
+echo "    Bye!"
