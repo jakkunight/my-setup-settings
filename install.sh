@@ -17,6 +17,7 @@ then
 	if [ $use_kali != "n" ] && [ $use_kali != "N" ]
 	then
 		sudo cp -f ./.zshrc /data/local/nhsystem/kali-arm64/root
+		sudo cp -f ./setup.sh /data/local/nhsystem/kali-arm64/root
 		if [ ! -f ~/.bashrc ]
 		then
 			touch ~/.bashrc
