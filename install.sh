@@ -19,7 +19,8 @@ then
 		sudo cp -f ./.zshrc /data/local/nhsystem/kali-arm64/root
 		if [ ! -f ~/.bashrc ]
 		then
-		touch ~/.bashrc
+			touch ~/.bashrc
+		fi
 	fi
 	echo "sudo /data/data/com.offsec.nethunter/files/scripts/bootkali" >> ~/.bashrc
 else
