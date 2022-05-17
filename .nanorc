@@ -18,7 +18,7 @@ set indicator
 
 # Autosave:
 set backup
-set backupdir $HOME/.nano/backups
+set backupdir ~/.nano/backups
 set saveonexit
 
 # Disable line wrap:
