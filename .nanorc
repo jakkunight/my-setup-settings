@@ -31,4 +31,4 @@ set tabsize 4
 set mouse
 
 # Syntax Highlighting:
-include $HOME/.nano/nanorc/*.nanorc
+include ~/.nano/nanorc/*.nanorc
