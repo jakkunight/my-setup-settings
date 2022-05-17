@@ -18,7 +18,7 @@ set indicator
 
 # Autosave:
 set backup
-set backupdir ~/.nano/backups
+set backupdir $HOME/.nano/backups
 set saveonexit
 
 # Disable line wrap:
@@ -31,4 +31,4 @@ set tabsize 4
 set mouse
 
 # Syntax Highlighting:
-include ~/.nano/nanorc/*.nanorc
+include $HOME/.nano/nanorc/*.nanorc

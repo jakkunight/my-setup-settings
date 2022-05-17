@@ -18,7 +18,8 @@ then
 	then
 		sudo cp -f ./.zshrc /data/local/nhsystem/kali-arm64/root
 		sudo cp -f ./setup.sh /data/local/nhsystem/kali-arm64/root
-		if [ ! -f ~/.bashrc ]
+		sudo cp -f ./.nanorc /data/local/nhsystem/kali-arm64/root
+		if [ ! -f $HOME/.bashrc ]
 		then
 			touch ~/.bashrc
 		fi
@@ -46,7 +47,7 @@ else
 
 	# Clones the syntax highlighting config files from @scopatz
 	echo "    Cloning syntax highlighting config files and creating nano backup dir..."
-	cd ~
+	cd $HOME
 	if [ ! -d .nano ]
 	then
 		mkdir .nano
