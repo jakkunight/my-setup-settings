@@ -5,26 +5,50 @@ pkg update -y
 
 # WARNING: ROOT ZONE!!!
 # Asks for root and tries to setup your enviroment according to this:
-echo "    Are you a ROOT USER (aka: SUPER USER or ADMINISTRATOR) [y|N]?"
+echo "    Are you a ROOT USER (aka: SUPER USER or ADMINISTRATOR) [y|n]?"
 read is_rooted
-if [ $is_rooted = "y" ] || [ $is_rooted = "Y" ]
+if [ $is_rooted = 'y' ] || [ $is_rooted = 'Y' ]
 then
 	pkg install root-repo -y
 	pkg install tsu -y
-        echo "    You have SUPER USER PERMISIONS NOW! USE IT WISELY!!!"
-	echo "    If you have installed Kali NetHunter, want to use it instead Termux? [Y|n]"
-	read use_kali
-	if [ $use_kali != "n" ] && [ $use_kali != "N" ]
+    echo "    You have SUPER USER PERMISIONS NOW! USE IT WISELY!!!"
+fi
+echo "    If you have installed Kali NetHunter (root), want to use it instead Termux? [y|n]"
+read use_kali
+if [ $use_kali != 'n' ] && [ $use_kali != 'N' ]
+then
+	sudo cp -f ./.zshrc /data/local/nhsystem/kali-arm64/root
+	sudo cp -f ./setup.sh /data/local/nhsystem/kali-arm64/root
+	sudo cp -f ./.nanorc /data/local/nhsystem/kali-arm64/root
+	if [ ! -f $HOME/.bashrc ]
 	then
-		sudo cp -f ./.zshrc /data/local/nhsystem/kali-arm64/root
-		sudo cp -f ./setup.sh /data/local/nhsystem/kali-arm64/root
-		sudo cp -f ./.nanorc /data/local/nhsystem/kali-arm64/root
-		if [ ! -f $HOME/.bashrc ]
-		then
-			touch ~/.bashrc
-		fi
+		touch ~/.bashrc
 	fi
 	echo "sudo /data/data/com.offsec.nethunter/files/scripts/bootkali" >> ~/.bashrc
+fi
+echo "    Do you like to install Kali NetHunter (rootless) on Texmux? [y|n]"
+read install_kali
+if [ $install_kali = 'y' ] || [ $install_kali = 'Y' ]
+then
+	termux-setup-storage
+	pkg install wget
+	wget -O install-nethunter-termux https://offs.ec/2MceZWr
+	chmod +x install-nethunter-termux
+	./install-nethunter-termux
+	cp ./.zshrc ./kali-arm64/kali/home
+	cp ./.bashrc ./kali-arm64/kali/home
+	cp ./.nanorc ./kali-arm64/kali/home
+	cp ./setup.sh ./kali-arm64/kali/home
+	echo "    Do you want to use it instead of Termux? [y|n]"
+	read use_kali_rootless
+	if [ $use_kali_rootless = 'y' ] || [ $use_kali_rootless = 'Y' ]
+	then
+		if [ ! -f $HOME/.bashrc ]
+		then
+			touch $HOME/.bashrc
+		fi
+		echo "nh" >> $HOME/.bashrc
+	fi
 else
 	# Setups the nodejs/expo/git basic enviroment:
 	echo "    Insatalling git, curl, wget, sqlite and nodejs..."
@@ -39,11 +63,11 @@ else
 	# Installs tmux (optional):
 	echo "    Installing tmux..."
 	pkg install tmux -y
-	
-	# Replaces config files into your root folder:
+
+	# Replaces config files into your $HOME folder:
 	echo "    Replacing config files for bash and nano..."
-	cp -f ./.bashrc ~
-	cp -f ./.nanorc ~
+	cp -f ./.bashrc $HOME
+	cp -f ./.nanorc $HOME
 
 	# Clones the syntax highlighting config files from @scopatz
 	echo "    Cloning syntax highlighting config files and creating nano backup dir..."
