@@ -24,7 +24,7 @@ then
 	then
 		touch ~/.bashrc
 	fi
-	echo "sudo /data/data/com.offsec.nethunter/files/scripts/bootkali" >> ~/.bashrc
+	echo "sudo /data/data/com.offsec.nethunter/files/scripts/bootkali" >> $HOME/.bashrc
 fi
 echo "    Do you like to install Kali NetHunter (rootless) on Texmux? [y|n]"
 read install_kali
@@ -51,8 +51,8 @@ then
 	fi
 else
 	# Setups the nodejs/expo/git basic enviroment:
-	echo "    Insatalling git, curl, wget, sqlite and nodejs..."
-	pkg install git curl wget sqlite nodejs-lts -y
+	echo "    Insatalling git, curl, wget, zsh, sqlite and nodejs..."
+	pkg install git curl wget, zsh, sqlite nodejs-lts -y
 	# Upgrades npm:
 	echo "    Installing npm..."
 	curl -qL https://www.npmjs.com/install.sh | sh
@@ -68,6 +68,7 @@ else
 	echo "    Replacing config files for bash and nano..."
 	cp -f ./.bashrc $HOME
 	cp -f ./.nanorc $HOME
+	cp -f ./.zshrc $HOME
 
 	# Clones the syntax highlighting config files from @scopatz
 	echo "    Cloning syntax highlighting config files and creating nano backup dir..."
