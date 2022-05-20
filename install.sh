@@ -102,6 +102,14 @@ else
 	# Installs htop for control how much RAM are we consuming:
 	echo "    Installing htop..."
 	pkg install htop -y
+
+	# Changes zsh into your default shell:
+	echo "    Do you want to use zsh instead of bash? [y|n]"
+	read use_zsh
+	if [ $use_zsh = 'y' ] || [ $use_zsh = 'Y' ]
+	then
+		chsh -s $(which zsh)
+	fi
 fi
 
 # Exit:
