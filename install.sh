@@ -108,7 +108,7 @@ else
 	read use_zsh
 	if [ $use_zsh = 'y' ] || [ $use_zsh = 'Y' ]
 	then
-		chsh -s $(which zsh)
+		chsh -s zsh
 	fi
 fi
 
