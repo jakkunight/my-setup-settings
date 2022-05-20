@@ -52,7 +52,7 @@ then
 else
 	# Setups the nodejs/expo/git basic enviroment:
 	echo "    Insatalling git, curl, wget, zsh, sqlite and nodejs..."
-	pkg install git curl wget, zsh, sqlite nodejs-lts -y
+	pkg install git curl wget zsh sqlite nodejs-lts -y
 	# Upgrades npm:
 	echo "    Installing npm..."
 	curl -qL https://www.npmjs.com/install.sh | sh
