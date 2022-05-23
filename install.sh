@@ -1,7 +1,7 @@
 # Script to install all the necesary tools for development
 echo "    Read the sript file after running. It will help you."
 echo "    Updating your system..."
-pkg update -y
+pkg update
 
 # WARNING: ROOT ZONE!!!
 # Asks for root and tries to setup your enviroment according to this:
@@ -9,8 +9,8 @@ echo "    Are you a ROOT USER (aka: SUPER USER or ADMINISTRATOR) [y|n]?"
 read is_rooted
 if [ $is_rooted = 'y' ] || [ $is_rooted = 'Y' ]
 then
-	pkg install root-repo -y
-	pkg install tsu -y
+	pkg install root-repo
+	pkg install tsu
     echo "    You have SUPER USER PERMISIONS NOW! USE IT WISELY!!!"
 fi
 echo "    If you have installed Kali NetHunter (root), want to use it instead Termux? [y|n]"
@@ -52,17 +52,17 @@ then
 else
 	# Setups the nodejs/expo/git basic enviroment:
 	echo "    Insatalling git, curl, wget, zsh, sqlite and nodejs..."
-	pkg install git curl wget zsh sqlite nodejs-lts -y
+	pkg install git curl wget zsh sqlite nodejs-lts
 	# Upgrades npm:
 	echo "    Installing npm..."
 	curl -qL https://www.npmjs.com/install.sh | sh
 	# Installs Expo and yarn
 	echo "    Installing Expo and yarn..."
-	npm i -g expo-cli eas-cli nodemon yarn -y
+	npm i -g expo-cli eas-cli nodemon yarn
 
 	# Installs tmux (optional):
 	echo "    Installing tmux..."
-	pkg install tmux -y
+	pkg install tmux
 
 	# Replaces config files into your $HOME folder:
 	echo "    Replacing config files for bash and nano..."
@@ -89,7 +89,7 @@ else
 
 	# Installs mysql:
 	echo "    Installing mariadb..."
-	pkg install mariadb -y
+	pkg install mariadb
 
 	# Mounts storage and access to downloads dir:
 	echo "    Mounting Termux storage system..."
@@ -97,11 +97,11 @@ else
 
 	# Installs screenfetch for tunning the enviroment:
 	echo "    Installing screenfetch..."
-	pkg install screenfetch -y
+	pkg install screenfetch
 
 	# Installs htop for control how much RAM are we consuming:
 	echo "    Installing htop..."
-	pkg install htop -y
+	pkg install htop
 
 	# Changes zsh into your default shell:
 	echo "    Do you want to use zsh instead of bash? [y|n]"
