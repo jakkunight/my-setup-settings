@@ -103,6 +103,10 @@ else
 	echo "    Installing htop..."
 	pkg install htop
 
+	# Installs nnn for navigating between files faster:
+	echo "    Installing nnn..."
+	pkg install nnn
+
 	# Changes zsh into your default shell:
 	echo "    Do you want to use zsh instead of bash? [y|n]"
 	read use_zsh
