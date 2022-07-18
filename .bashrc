@@ -1,3 +1,13 @@
+pscale ()
+{
+	mysql -h i36l79tdjaxk.us-east-4.psdb.cloud -u ueduqq6tfks3 -ppscale_pw_Hn7PhelQfTue-1ChT8liWextXuYGtEoK9ryk7zvSNDw --ssl-ca=$PREFIX/etc/tls/cert.pem
+}
+
+db4free ()
+{
+	mysql -h db4free.net -u jakku_kun -p2ab+aa+bb
+}
+
 n ()
 {
     # Block nesting of nnn in subshells

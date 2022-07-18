@@ -22,7 +22,7 @@ set backupdir ~/.nano/backups
 set saveonexit
 
 # Enable line wrap:
-set breaklonglines
+#set breaklonglines
 
 # Set tabsize:
 set tabsize 4

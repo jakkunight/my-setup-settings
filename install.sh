@@ -70,7 +70,7 @@ else
 	cp -f ./.nanorc $HOME
 	cp -f ./.zshrc $HOME
 
-	# Clones the syntax highlighting config files from @scopatz
+	# Clones the syntax highlighting config files from @jakkunight
 	echo "    Cloning syntax highlighting config files and creating nano backup dir..."
 	cd $HOME
 	if [ ! -d .nano ]
@@ -84,7 +84,7 @@ else
 	fi
 	if [ ! -d nanorc ]
 	then
-		git clone https://github.com/scopatz/nanorc
+		git clone https://github.com/jakkunight/nanorc
 	fi
 
 	# Installs mysql:
