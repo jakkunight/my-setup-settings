@@ -257,6 +257,12 @@ if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
 
+cleanup ()
+{
+	tmux kill-server
+	exit
+}
+
 pscale ()
 {
 	mysql -h i36l79tdjaxk.us-east-4.psdb.cloud -u ueduqq6tfks3 -ppscale_pw_Hn7PhelQfTue-1ChT8liWextXuYGtEoK9ryk7zvSNDw --ssl-ca=$PREFIX/etc/tls/cert.pem
@@ -307,6 +313,21 @@ trap nnn_cd EXIT
 export nnn="$1"
 
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-	exec tmux new-session \; split-window -h \; split-window -v \; split-window -h \; attach
+	tmux start-server
+	tmux new-session -d -s Termux -n Termux
+	tmux new-window -t Termux:1 -n Database
+	tmux new-window -t Termux:2 -n Backend
+	tmux new-window -t Termux:3 -n Frontend
+	tmux new-window -t Termux:4 -n htop
+
+	tmux split-window -h -t Termux:2
+	tmux split-window -v -t Termux:2
+	tmux split-window -h -t Termux:2
+
+	tmux split-window -h -t Termux:3
+	tmux split-window -v -t Termux:3
+	tmux split-window -h -t Termux:3
+
+	tmux attach
 fi
 n
