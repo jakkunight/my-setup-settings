@@ -63,15 +63,13 @@ else
 fi
 echo "------------------------------------------------------------------------------------------------------"
 echo "Configuring nano..."
-current_dir = $PWD
-mkdir ~/.nano
-sudo cp .nanorc ~/.nano
-cd ~/.nano
-sudo git clone https://github.com/jakkunight/nanorc
-cd $current_dir
+mkdir -f ~/.nano
+sudo cp -f ./.nanorc ~/.nano
+sudo cp -f ./.nanorc ~
+sudo git clone https://github.com/jakkunight/nanorc ~/.nano/nanorc
 echo "-------------------------------------------------------------------------------------------------------"
 echo "Configuring tmux..."
-sudo cp .tmux.conf ~
+sudo cp -f .tmux.conf ~
 echo "-------------------------------------------------------------------------------------------------------"
 echo "Select your shell:"
 echo "1) Bash (Default)"
