@@ -25,12 +25,17 @@ echo "--------------------------------------------------------------------------
 echo "Installing nodejs..."
 sudo apt install nodejs -y
 echo "-----------------------------------------------------------------------------------------------------"
-echo "Installing npm and yarn..."
+echo "Installing yarn..."
 sudo apt install yarnpkg
-sudo curl -qL https://www.npmjs.com/install.sh | sudo sh
 echo "-----------------------------------------------------------------------------------------------------"
-echo "Installing nvm..."
-sudo apt install nvm -y
+echo "Do you want to download and install npm? [y/N]"
+read op
+if [[ $op == 'y' || $op == 'Y' ]]; then
+	echo "Installing npm..."
+	sudo curl -qL https://www.npmjs.com/install.sh | sudo sh
+else
+	echo "Skipping..."
+fi
 echo "-----------------------------------------------------------------------------------------------------"
 echo "Installing nnn..."
 sudo apt install nnn -y
@@ -61,6 +66,7 @@ if [[ $op == 'y' || $op == 'Y' ]]; then
 else
 	echo "Skipping..."
 fi
+echo "-----------------------------------------------------------------------------------------------------"
 echo "Do you want to install micro? [Y/n]"
 read op
 if [[ $op == 'n' || $op == 'N' ]]; then
@@ -73,6 +79,13 @@ else
 	mkdir ~/.config/micro/syntax
 	cp -f ./sketch.yaml ~/.config/micro/syntax
 fi
+echo "-----------------------------------------------------------------------------------------------------"
+echo "Installing micro plugins..."
+micro -plugin install bookmark
+micro -plugin install quoter
+micro -plugin install comment
+micro -plugin install snippets
+micro -plugin install filemanager
 echo "------------------------------------------------------------------------------------------------------"
 echo "Configuring nano..."
 mkdir -f ~/.nano

@@ -61,13 +61,13 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
 	tmux new-window -t Termux:3 -n Frontend
 	tmux new-window -t Termux:4 -n htop
 
-	tmux split-window -h -t Termux:2
-	tmux split-window -v -t Termux:2
-	tmux split-window -h -t Termux:2
+	tmux split-window -h -t Backend
+	tmux split-window -v -t Backend
+	tmux split-window -h -t Backend
 
-	tmux split-window -h -t Termux:3
-	tmux split-window -v -t Termux:3
-	tmux split-window -h -t Termux:3
+	tmux split-window -h -t Frontend
+	tmux split-window -v -t Frontend
+	tmux split-window -h -t Frontend
 
 	tmux attach
 fi
