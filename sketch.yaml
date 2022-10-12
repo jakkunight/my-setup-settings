@@ -1,0 +1,70 @@
+filetype: sketch
+
+detect:
+    filename: "(\\.skt$)"
+
+rules:
+    - constant.number: "\\b[-+]?([1-9][0-9]*|0[0-7]*|0x[0-9a-fA-F]+)([uU][lL]?|[lL][uU]?)?\\b"
+    - constant.number: "\\b[-+]?([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([EePp][+-]?[0-9]+)?[fFlL]?"
+    - constant.number: "\\b[-+]?([0-9]+[EePp][+-]?[0-9]+)[fFlL]?"
+    #- identifier: "[A-Za-z_][A-Za-z0-9_]*[[:space:]]*[(]"
+    # ^ this is not correct usage of the identifier color
+    - symbol.brackets: "(\\{|\\})"
+    - symbol.brackets: "(\\(|\\))"
+    - symbol.brackets: "(\\[|\\])"
+    - symbol.brackets: "(\\<|\\>)"
+    - symbol.operator: "([-+/*=<>!~%?:&|]|[.]{3})"
+    - statement: "\\b(const|let|var|static|long|short|volatile)\\b"
+    - statement: "\\b(class|struct|constructor|public|private|protected)\\b"
+    - statement: "\\b(if|else|for|while|do|switch|case|break|continue|goto|return)\\b"
+    - statement: "\\b(sizeof|typeof|instanceof|new|delete|create|destroy)\\b"
+    - identifier: "\\b(FILE|SOCKET|DATABASE|CONNECTION|WINDOW|CONSOLE|MICROPHONE|KEYBOARD|MOUSE|SCREEN|PRINTER|SPRITE|IMAGE|DOCUMENT|FILESYSTEM|SYSTEM|SHELL|AUDIO|VIDEO)\\b"
+    
+    - constant: "\\b(true|false)\\b"
+    - type: "\\b(int|char|float|double|void|bool|string|object|function|byte|word|pointer|array|bit|color|undefined)\\b"
+
+    # - constant: "/[^*]([^/]|(\\\\/))*[^\\\\]/[gim]*"
+    - constant: "\\\\[0-7][0-7]?[0-7]?|\\\\x[0-9a-fA-F]+|\\\\[bfnrt'\"\\?\\\\]"
+
+    - identifier: "\\b(require|fetch)\\b"
+    - identifier: "\\.+\\b(connect|disconnect|render|open|load|read|write|create|destroy|record|play|pause|stop|body|header|execute|command|move|copy|rename|delete|minimize|close|maximize|fullscreen|log|error|table|element|get|set)\\b"
+
+    - constant.string:
+        start: "\""
+        end: "\""
+        skip: "\\\\."
+        rules:
+            - constant.specialChar: "\\\\."
+
+    - constant.string:
+        start: "'"
+        end: "'"
+        skip: "\\\\."
+        rules:
+            - constant.specialChar: "\\\\."
+
+    - constant.string:
+        start: "`"
+        end: "`"
+        rules:
+            - constant.specialChar: "\\\\."
+            - identifier: "\\x24\\{.*?\\}"
+
+    - constant.bool: "\\b(true|false)\\b"
+    - constant.bool.false: "\\b(false)\\b"
+    - constant.bool.true: "\\b(true)\\b"
+
+    - comment:
+        start: "//"
+        end: "$"
+        rules:
+            - todo: "(TODO|XXX|FIXME)"
+
+    - comment:
+        start: "/\\*"
+        end: "\\*/"
+        rules:
+            # function documentation
+            - identifier: "\\s\\*\\s.*"
+            - todo: "(TODO|XXX|FIXME)"
+    - constant.string.url: "(http(s)?|ftp(s)?|chrome|file|git|mysql|exp)://\\*(/)?"

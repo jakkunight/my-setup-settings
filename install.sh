@@ -37,7 +37,7 @@ sudo apt install nnn -y
 echo "-----------------------------------------------------------------------------------------------------"
 echo "Do you want to install C/C++ development tools? [Y/n]"
 read op
-if [[ $op == 'n' || $op == Â'N' ]]; then
+if [[ $op == 'n' || $op == 'N' ]]; then
 	echo "Skipping..."
 else
 	echo "Installing gcc, g++, make, build-essentials, cmake and clang..."
@@ -61,6 +61,17 @@ if [[ $op == 'y' || $op == 'Y' ]]; then
 else
 	echo "Skipping..."
 fi
+echo "Do you want to install micro? [Y/n]"
+read op
+if [[ $op == 'n' || $op == 'N' ]]; then
+	echo "Skipping..."
+else
+	echo "Installing micro..."
+	sudo apt install micro -y
+	echo "Adding the SKT (Sketch) Language definition and darknight theme..."
+	cp -f ./darknight.micro ~/.config/micro/colorschemes
+	mkdir -f ~/.config/micro/syntax
+	cp -f ./sketch.yaml ~/.config/micro/syntax
 echo "------------------------------------------------------------------------------------------------------"
 echo "Configuring nano..."
 mkdir -f ~/.nano
