@@ -70,8 +70,9 @@ else
 	sudo apt install micro -y
 	echo "Adding the SKT (Sketch) Language definition and darknight theme..."
 	cp -f ./darknight.micro ~/.config/micro/colorschemes
-	mkdir -f ~/.config/micro/syntax
+	mkdir ~/.config/micro/syntax
 	cp -f ./sketch.yaml ~/.config/micro/syntax
+fi
 echo "------------------------------------------------------------------------------------------------------"
 echo "Configuring nano..."
 mkdir -f ~/.nano
