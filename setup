@@ -1,0 +1,157 @@
+#!/usr/bin/bash
+print_banner (){
+	echo "#############################################################################################"
+	echo "#                                                                                           #"
+	echo "#    Setup Script Installer for Developers/Hackers/Content Creators/etc (SSI)               #"
+	echo "#    Author: Jakku Night (aka @jakkunight on GitHub and @jakku_night on XDA Developers)     #"
+	echo "#    This can be found here: https://github.com/jakkunight/my-setup-settings                #"
+	echo "#    This script ONLY WORKS on DEBIAN-BASED DISTROS!!! Modify for use on other distros.     #"
+	echo "#                                                                                           #"
+	echo "#############################################################################################"
+}
+ask_for_root (){
+	echo "Are you a ROOT user? (aka SUPERUSER or ADMINISTRATOR) [Y/n]"
+	read is_root
+	if [[ $is_root == n || $is_root == N ]]; then
+		 echo "You need ROOT privileges to execute this script. Please re-run this script as ROOT and try again."
+		 exit
+	fi
+}
+update_system (){
+	echo " - Updating your system..."
+	apt update -y
+	apt upgrade -y
+	echo " ! System up-to-date."
+}
+install_basics (){
+	echo " - Installing the basic tools... (git, curl, wget and htop)"
+	apt install git curl wget htop -y
+	echo " ! Tools installed."
+}
+javascript_setup (){
+	echo " - Installing node..."
+	apt install nodejs -y
+	echo " ! Node.js was installed."
+	echo " - Installing npm@latest..."
+	curl -qL https://www.npmjs.com/install.sh | sh
+	echo " ! NPM successfully installed."
+	echo " - Installing yarn..."
+	apt install yarnpkg -y || apt install yarn -y
+	echo " ! Yarn successfully installed."
+	echo " - Installing nvm..."
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+	echo " ! Successfully installed NVM. Please restart your terminal to load changes."
+}
+python_setup (){
+	exit	
+}
+vnc_xfce4_setup (){
+	exit
+}
+cpp_setup (){
+	exit
+}
+java_setup (){
+	exit
+}
+php_setup (){
+	exit
+}
+database_setup (){
+	echo " - Installing database engines... (mariadb, mongoose, mongod and sqlite3)"
+	apt install gnupg -y
+	wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+	echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+	apt update
+	apt install mongodb-org -y
+	apt install mariadb sqlite -y || apt install mariadb-server sqlite3 -y
+	echo " ! All DATABASES ENGINES successfully installed."
+	echo " - Configuring MariaDB..."
+	service mariadb start
+	mysql_secure_installation
+	echo " ! MariadDB has been configured." 
+}
+aircrack_ng_setup (){
+	exit
+}
+editor_setup (){
+	echo " - Installing terminal editors... (micro and vim)"
+	apt install micro vim -y
+	echo " ! MICRO adn ViM successfully installed."
+	echo " - Configuring MICRO..."
+	echo " - Adding the SKT (Sketch) Language definition and darknight theme..."
+	mkdir ~/.config/micro/colorschemes
+	cp -f ./darknight.micro ~/.config/micro/colorschemes
+	mkdir ~/.config/micro/syntax
+	cp -f ./sketch.yaml ~/.config/micro/syntax
+	echo " ! MICRO successfully configured."
+	echo " - Installing micro plugins... (bookmark, quoter, comment, snippets, filemanager)"
+	micro -plugin install bookmark
+	micro -plugin install quoter
+	micro -plugin install comment
+	micro -plugin install snippets
+	micro -plugin install filemanager
+	echo " ! Successfully installed MICRO plugins."
+}
+decrypt_tools_setup (){
+	exit
+}
+bruteforce_tools (){
+	exit
+}
+samba (){
+	echo " - Installing samba..."
+	apt install samba -y
+	echo " ! SAMBA successfully installed."
+	echo " - Configuring samba..."
+	nano /etc/samba/smb.conf
+	echo "Input the username for samba to access to the shared resource:"
+	read name
+	smbpasswd -a $name
+	echo " ! SAMBA successfully configured."
+}
+lua_setup (){
+	exit
+}
+apache_setup (){
+	exit
+}
+tmux_setup (){
+	echo " - Installing tmux..."
+	apt install tmux -y
+	echo " ! Tmux successfully installed."
+}
+golang_setup (){
+	exit
+}
+nginx_setup (){
+	exit
+}
+shell_setup (){
+	echo " - Configuring the shell..."
+	cp -f .*shrc ~
+	echo " ! Shell configured."
+}
+nnn_setup (){
+	echo " - Installing nnn..."
+	apt install nnn -y
+	echo " ! NNN successfully installed."
+}
+
+print_banner
+ask_for_root
+update_system
+install_basics
+while true; do
+	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup"; do
+		case $op in
+			"JavaScript setup" ) javascript_setup; break;;
+			"TMUX Setup" ) tmux_setup; break;;
+			"NNN Setup" ) nnn_setup; break;;
+			"Editors Setup" ) editor_setup; break;;
+			"SAMBA Setup" ) samba_setup; break;;
+			"DATABASE Setup" ) database_setup; break;;
+		esac
+	done
+done
+shell_setup

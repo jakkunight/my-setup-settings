@@ -262,7 +262,6 @@ cleanup ()
 	tmux kill-server
 	exit
 }
-
 pscale ()
 {
 	mysql -h i36l79tdjaxk.us-east-4.psdb.cloud -u ueduqq6tfks3 -ppscale_pw_Hn7PhelQfTue-1ChT8liWextXuYGtEoK9ryk7zvSNDw --ssl-ca=$PREFIX/etc/tls/cert.pem
@@ -312,22 +311,5 @@ nnn_cd()
 trap nnn_cd EXIT
 export nnn="$1"
 
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-	tmux start-server
-	tmux new-session -d -s Termux -n Termux
-	tmux new-window -t Termux:1 -n Database
-	tmux new-window -t Termux:2 -n Backend
-	tmux new-window -t Termux:3 -n Frontend
-	tmux new-window -t Termux:4 -n htop
-
-	tmux split-window -h -t Backend
-	tmux split-window -v -t Backend
-	tmux split-window -h -t Backend
-
-	tmux split-window -h -t Frontend
-	tmux split-window -v -t Frontend
-	tmux split-window -h -t Frontend
-
-	tmux attach
-fi
-n
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm

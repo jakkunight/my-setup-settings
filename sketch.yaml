@@ -13,10 +13,10 @@ rules:
     - symbol.brackets: "(\\(|\\))"
     - symbol.brackets: "(\\[|\\])"
     - symbol.brackets: "(\\<|\\>)"
-    - symbol.operator: "([-+/*=<>!~%?:&|]|[.]{3})"
+    - symbol.operator: "([-+/*=<>!~%?:&|,;.]|[.]{3})"
     - statement: "\\b(const|let|var|static|long|short|volatile)\\b"
     - statement: "\\b(class|struct|constructor|public|private|protected)\\b"
-    - statement: "\\b(if|else|for|while|do|switch|case|break|continue|goto|return)\\b"
+    - statement: "\\b(if|else|for|while|do|switch|case|break|continue|goto|return|try|catch|async|await)\\b"
     - statement: "\\b(sizeof|typeof|instanceof|new|delete|create|destroy)\\b"
     - identifier: "\\b(FILE|SOCKET|DATABASE|CONNECTION|WINDOW|CONSOLE|MICROPHONE|KEYBOARD|MOUSE|SCREEN|PRINTER|SPRITE|IMAGE|DOCUMENT|FILESYSTEM|SYSTEM|SHELL|AUDIO|VIDEO)\\b"
     
@@ -27,7 +27,7 @@ rules:
     - constant: "\\\\[0-7][0-7]?[0-7]?|\\\\x[0-9a-fA-F]+|\\\\[bfnrt'\"\\?\\\\]"
 
     - identifier: "\\b(require|fetch)\\b"
-    - identifier: "\\.+\\b(connect|disconnect|render|open|load|read|write|create|destroy|record|play|pause|stop|body|header|execute|command|move|copy|rename|delete|minimize|close|maximize|fullscreen|log|error|table|element|get|set)\\b"
+    - identifier: "\\.([[:alnum:]]|[_])*"
 
     - constant.string:
         start: "\""
