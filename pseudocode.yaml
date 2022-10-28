@@ -1,7 +1,7 @@
-filetype: sketch
+filetype: pseudocode
 
 detect:
-    filename: "(\\.skt$)"
+    filename: "(\\.psc$)"
 
 rules:
     - constant.number: "\\b[-+]?([1-9][0-9]*|0[0-7]*|0x[0-9a-fA-F]+)([uU][lL]?|[lL][uU]?)?\\b"
@@ -14,20 +14,21 @@ rules:
     - symbol.brackets: "(\\[|\\])"
     - symbol.brackets: "(\\<|\\>)"
     - symbol.operator: "([-+/*=<>!~%?:&|,;.]|[.]{3})"
-    - statement: "\\b(const|let|var|static|long|short|volatile)\\b"
-    - statement: "\\b(class|struct|constructor|public|private|protected)\\b"
-    - statement: "\\b(if|else|for|while|do|switch|case|break|continue|goto|return|try|catch|async|await)\\b"
-    - statement: "\\b(sizeof|typeof|instanceof|new|delete|create|destroy)\\b"
-    - identifier: "\\b(FILE|SOCKET|DATABASE|CONNECTION|WINDOW|CONSOLE|MICROPHONE|KEYBOARD|MOUSE|SCREEN|PRINTER|SPRITE|IMAGE|DOCUMENT|FILESYSTEM|SYSTEM|SHELL|AUDIO|VIDEO)\\b"
+    - statement: "\\b(INICIO|FIN|RETORNAR|SALTAR|CONTINUAR)\\b"
+    - statement: "\\b(SI|ENTONCES|SINO|FINSI|REPETIR|HASTA|MIENTRAS|HACER|FINMIENTRAS|DESDE|FINDESDE|PASO|POR DEFECTO|EN CASO QUE)\\b"
+    - statement: "\\b(CONECTAR CON|IMPRIMIR|LEER|GRABAR EN|CONSULTAR|INICIAR SESIÓN EN|MOSTRAR)\\b"
+    #- statement: "\\b()\\b"
+    #- statement: "\\b()\\b"
+    - identifier: "\\b(ARCHIVO|BASE DE DATOS|TABLA|COLUMNA|SISTEMA|RED|SERVIDOR|CLIENTE|DIRECTORIO|IMPRESORA|MOUSE|DISCO)\\b"
     
-    - constant: "\\b(true|false)\\b"
-    - type: "\\b(int|char|float|double|void|bool|string|object|function|byte|word|pointer|array|bit|color|undefined)\\b"
+    - constant: "\\b(VERDADERO|FALSO)\\b"
+    - type: "\\b(FUNCIÓN|OBJETO|ENTERO|NÚMERO|BOOLEANO|TEXTO|CARACTER|VACÍO|BYTE|BIT|CONSTANTE)\\b"
 
     # - constant: "/[^*]([^/]|(\\\\/))*[^\\\\]/[gim]*"
     - constant: "\\\\[0-7][0-7]?[0-7]?|\\\\x[0-9a-fA-F]+|\\\\[bfnrt'\"\\?\\\\]"
 
-    - identifier: "\\b(require|fetch)\\b"
-    - identifier: "\\.([[:alnum:]]|_)+"
+    - identifier: "\\b()\\b"
+    - identifier: "\\.([[:alnum:]]|[_])+"
 
     - constant.string:
         start: "\""
