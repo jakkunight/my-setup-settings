@@ -27,7 +27,7 @@ rules:
     - constant: "\\\\[0-7][0-7]?[0-7]?|\\\\x[0-9a-fA-F]+|\\\\[bfnrt'\"\\?\\\\]"
 
     - identifier: "\\b(require|fetch)\\b"
-    - identifier: "\\.([[:alnum:]]|_)+"
+    - identifier: "([[:alpha:]]|_)+\\.([[:alnum:]]|_)+"
 
     - constant.string:
         start: "\""
