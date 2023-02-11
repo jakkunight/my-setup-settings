@@ -14,6 +14,7 @@ rules:
     - symbol.brackets: "(\\[|\\])"
     - symbol.brackets: "(\\<|\\>)"
     - symbol.operator: "([-+/*=<>!~%?:&|,;.]|[.]{3})"
+    - symbol.tag: "^[[:blank:]]*\\[[[:alnum:][:punct:][:blank:]\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]*\\][[:punct:][:blank:][:alnum:]\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]*$"
     - statement: "\\b(const|let|var|static|long|short|volatile)\\b"
     - statement: "\\b(class|struct|constructor|public|private|protected)\\b"
     - statement: "\\b(if|else|for|while|do|switch|case|break|continue|goto|return|try|catch|async|await)\\b"

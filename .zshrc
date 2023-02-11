@@ -313,3 +313,17 @@ export nnn="$1"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+export ANDROID_TOOLCHAIN=/root/android/build-tools
+export DISPLAY=:0
+export PULSE_SERVER=tcp:127.0.0.1:4713
+cd /root
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	tmux -u \
+	new-session -s Jakku -n documentation/git\; \
+	new-window -t Jakku:1 -n code/build\; \
+	split-window -t Jakku:1 -v\; \
+	new-window -t Jakku:2 -n execution/code\; \
+	new-window -t Jakku:3 -n database/sql\; \
+	attach
+fi
