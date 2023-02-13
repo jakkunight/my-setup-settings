@@ -314,12 +314,17 @@ export nnn="$1"
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
+if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
+	source /usr/share/powerline/bindings/bash/powerline.sh
+fi
+
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
 export ANDROID_TOOLCHAIN=/root/android/build-tools
 export DISPLAY=:0
 export PULSE_SERVER=tcp:127.0.0.1:4713
 cd /root
+n
 
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	tmux -u \
