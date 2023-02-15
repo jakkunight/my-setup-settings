@@ -43,7 +43,12 @@ javascript_setup (){
 	echo " ! Successfully installed NVM. Please restart your terminal to load changes."
 }
 python_setup (){
-	exit	
+	echo " - Installing python-is-python3..."
+	apt install python-is-python3 -y
+	echo " ! Successfully intalled."
+	echo " - Installing pip..."
+	apt install python3-pip --fix-missing -y
+	echo " ! Successfully intalled."
 }
 vnc_xfce4_setup (){
 	exit
@@ -52,7 +57,6 @@ cpp_setup (){
 	echo " - Installing cmake and clang..."
 	apt install cmake clang -y
 	echo " ! Successfully installed."
-	exit
 }
 java_setup (){
 	exit
@@ -150,7 +154,7 @@ ask_for_root
 update_system
 install_basics
 while true; do
-	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup"; do
+	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup"; do
 		case $op in
 			"JavaScript setup" ) javascript_setup; break;;
 			"TMUX Setup" ) tmux_setup; break;;
@@ -158,6 +162,7 @@ while true; do
 			"Editors Setup" ) editor_setup; break;;
 			"SAMBA Setup" ) samba_setup; break;;
 			"DATABASE Setup" ) database_setup; break;;
+			"C++ Setup" ) cpp_setup; break;;
 		esac
 	done
 done
