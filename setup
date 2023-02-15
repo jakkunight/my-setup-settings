@@ -49,6 +49,9 @@ vnc_xfce4_setup (){
 	exit
 }
 cpp_setup (){
+	echo " - Installing cmake and clang..."
+	apt install cmake clang -y
+	echo " ! Successfully installed."
 	exit
 }
 java_setup (){
@@ -79,17 +82,16 @@ editor_setup (){
 	apt install micro vim -y
 	echo " ! MICRO adn ViM successfully installed."
 	echo " - Configuring MICRO..."
-	echo " - Adding the SKT (Sketch) Language definition and darknight theme..."
+	echo " - Adding the SKT (Sketch) and PSC (Pseudocode) Language definition and darknight and nightmare-tc themes..."
 	mkdir ~/.config/micro/colorschemes
-	cp -f ./darknight.micro ~/.config/micro/colorschemes
+	cp -f ./*.micro ~/.config/micro/colorschemes
 	mkdir ~/.config/micro/syntax
-	cp -f ./sketch.yaml ~/.config/micro/syntax
+	cp -f ./*.yaml ~/.config/micro/syntax
+	cp -f ./bindings.json ~/.config/micro
 	echo " ! MICRO successfully configured."
-	echo " - Installing micro plugins... (bookmark, quoter, comment, snippets, filemanager)"
-	micro -plugin install bookmark
+	echo " - Installing micro plugins... (quoter, comment, filemanager)"
 	micro -plugin install quoter
 	micro -plugin install comment
-	micro -plugin install snippets
 	micro -plugin install filemanager
 	echo " ! Successfully installed MICRO plugins."
 }
@@ -119,7 +121,12 @@ apache_setup (){
 tmux_setup (){
 	echo " - Installing tmux..."
 	apt install tmux -y
-	echo " ! Tmux successfully installed."
+	echo "Installing powerline..."
+	apt install poweerline -y
+	echo " ! Tmux and Powerline successfully installed."
+	echo "Configuring..."
+	cp ./.tmux.conf	~/
+	cp ./default.json /usr/share/powerline/config_files/themes/tmux
 }
 golang_setup (){
 	exit
