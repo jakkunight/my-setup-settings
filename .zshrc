@@ -321,6 +321,7 @@ fi
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
 export ANDROID_TOOLCHAIN=/root/android/build-tools
+export PATH=$PATH:/opt/gradle/gradle-*/bin
 export DISPLAY=:0
 export PULSE_SERVER=tcp:127.0.0.1:4713
 cd /root

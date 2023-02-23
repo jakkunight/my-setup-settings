@@ -59,7 +59,18 @@ cpp_setup (){
 	echo " ! Successfully installed."
 }
 java_setup (){
-	exit
+	echo " - Installing default-jdk..."
+	apt install default-jdk -y
+	echo " ! Installed default-jdk."
+	echo " - Installing gradle..."
+	exec_dir=${pwd}
+	mkdir /opt/gradle
+	cd /opt/gradle
+	curl https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
+	unzip gradle-*-bin.zip
+	export PATH=$PATH:/opt/gradle/gradle-*/bin
+	cd $exec_dir
+	echo " ! Installed gradle."
 }
 php_setup (){
 	exit
@@ -154,7 +165,7 @@ ask_for_root
 update_system
 install_basics
 while true; do
-	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup"; do
+	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup"; do
 		case $op in
 			"JavaScript setup" ) javascript_setup; break;;
 			"TMUX Setup" ) tmux_setup; break;;
@@ -163,6 +174,7 @@ while true; do
 			"SAMBA Setup" ) samba_setup; break;;
 			"DATABASE Setup" ) database_setup; break;;
 			"C++ Setup" ) cpp_setup; break;;
+			"Java Setup" ) java_setup; break;;
 		esac
 	done
 done
