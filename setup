@@ -68,7 +68,7 @@ java_setup (){
 	cd /opt/gradle
 	wget https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
 	unzip gradle-*-bin.zip
-	export PATH=$PATH:/opt/gradle/gradle-*/bin
+	export PATH=$PATH:/opt/gradle/gradle-8.0.1/bin
 	cd $exec_dir
 	echo " ! Installed gradle."
 }
