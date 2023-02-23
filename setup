@@ -66,7 +66,7 @@ java_setup (){
 	exec_dir=${pwd}
 	mkdir /opt/gradle
 	cd /opt/gradle
-	curl https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
+	wget https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
 	unzip gradle-*-bin.zip
 	export PATH=$PATH:/opt/gradle/gradle-*/bin
 	cd $exec_dir
