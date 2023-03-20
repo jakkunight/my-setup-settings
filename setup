@@ -160,12 +160,28 @@ nnn_setup (){
 	echo " ! NNN successfully installed."
 }
 
+vscode_firefox_setup (){
+	echo " - Installing gpg..."
+	apt install gpg
+	echo " ! gpg installed."
+	echo " - Adding Microsoft's repos to apt..."
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+	sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+	rm -f packages.microsoft.gpg
+	apt update
+	echo " ! Added Microsoft's repos."
+	echo " - Installing code and firefox-esr..."
+	apt install code firefox-esr
+	echo " ! Installed code and firefox-esr."
+}
+
 print_banner
 ask_for_root
 update_system
 install_basics
 while true; do
-	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup"; do
+	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Visual Studio Code + Firefox Setup"; do
 		case $op in
 			"JavaScript setup" ) javascript_setup; break;;
 			"TMUX Setup" ) tmux_setup; break;;
@@ -175,6 +191,7 @@ while true; do
 			"DATABASE Setup" ) database_setup; break;;
 			"C++ Setup" ) cpp_setup; break;;
 			"Java Setup" ) java_setup; break;;
+			"Visual Studio Code + Firefox Setup" ) vscode_firefox_setup; break;;
 		esac
 	done
 done
