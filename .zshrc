@@ -264,13 +264,23 @@ cleanup ()
 }
 pscale ()
 {
-	mysql -h i36l79tdjaxk.us-east-4.psdb.cloud -u ueduqq6tfks3 -ppscale_pw_Hn7PhelQfTue-1ChT8liWextXuYGtEoK9ryk7zvSNDw --ssl-ca=$PREFIX/etc/tls/cert.pem
+	mysql -h i36l79tdjaxk.us-east-4.psdb.cloud -u ueduqq6tfks3 -ppscale_pw_Hn7PhelQfTue-1ChT8liWextXuYGtEoK9ryk7zvSNDw --ssl-ca=/etc/ssl/certs/ca-certificates.crt
 }
-
 db4free ()
 {
 	mysql -h db4free.net -u jakku_kun -p2ab+aa+bb
 }
+
+startvnc (){
+	vncserver -xstartup i3 -depth 32 -geometry 1280x768 -localhost yes -useold :1
+}
+
+stopvnc (){
+	vncserver -kill :1
+}
+
+# Sets micro as default editor:
+export EDITOR=/bin/micro
 
 n ()
 {
@@ -293,7 +303,7 @@ n ()
     # stty lwrap undef
     # stty lnext undef
 
-    nnn "$@"
+    nnn "$@" -c -E -H -d -u -i
 
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
@@ -322,17 +332,100 @@ rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
 export ANDROID_TOOLCHAIN=/root/android/build-tools
 export PATH=$PATH:/opt/gradle/gradle-*/bin
-export DISPLAY=:0
+export DISPLAY=:1
 export PULSE_SERVER=tcp:127.0.0.1:4713
 cd /root
 n
 
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-	tmux -u \
-	new-session -s Jakku -n documentation/git\; \
-	new-window -t Jakku:1 -n code/build\; \
-	split-window -t Jakku:1 -v\; \
-	new-window -t Jakku:2 -n execution/code\; \
-	new-window -t Jakku:3 -n database/sql\; \
-	attach
-fi
+# Setups IDE layout.
+# C/C++ + SQL dev:
+cpp(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n code/build\; \
+		split-window -t Jakku:1 -v\; \
+		new-window -t Jakku:2 -n execution/testing\; \
+		new-window -t Jakku:3 -n database/sql\; \
+		attach
+	fi
+}
+# Java/Kotlin + Gradle + SQL dev:
+java_gradle(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n code\; \
+		new-window -t Jakku:2 -n execution\; \
+		new-window -t Jakku:3 -n database/sql\; \
+		attach
+	fi
+}
+# JavaScript/Typescript + SQL dev (Fullstack):
+js_fullstack(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n backend/server\; \
+		split-window -t Jakku:1 -v\; \
+		new-window -t Jakku:2 -n frontend/client\; \
+		split-window -t Jakku:2 -v\; \
+		new-window -t Jakku:3 -n database/sql\; \
+		attach
+	fi
+}
+# JavaScript/Typescript + SQL dev (Backend):
+js_backend(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n code/build\; \
+		split-window -t Jakku:1 -v\; \
+		new-window -t Jakku:2 -n execution/testing\; \
+		new-window -t Jakku:3 -n database/sql\; \
+		attach
+	fi
+}
+# JavaScript/Typescript + SQLite/LocalStorage dev (Frontend):
+js_frontend(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n code/build\; \
+		split-window -t Jakku:1 -v\; \
+		split-window -t Jakku:1 -h\; \
+		new-window -t Jakku:2 -n testing\; \
+		new-window -t Jakku:3 -n database/sql\; \
+		attach
+	fi
+}
+# Python + SQL dev:
+python_dev(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n code/build\; \
+		new-window -t Jakku:2 -n execution/testing\; \
+		new-window -t Jakku:3 -n database/sql\; \
+		attach
+	fi
+}
+# Shell Scripting:
+bash_scripting(){
+	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+		tmux -u \
+		new-session -s Jakku -n documentation/git\; \
+		new-window -t Jakku:1 -n code/build\; \
+		new-window -t Jakku:2 -n execution/testing\; \
+		attach
+	fi
+}
+
+
+# pnpm
+export PNPM_HOME="/root/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

@@ -41,6 +41,9 @@ javascript_setup (){
 	echo " - Installing nvm..."
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 	echo " ! Successfully installed NVM. Please restart your terminal to load changes."
+	echo " - Installing pnpm..."
+	curl -fsSL https://get.pnpm.io/install.sh | sh -
+	echo "! Pnpm successfully installed."
 }
 python_setup (){
 	echo " - Installing python-is-python3..."
@@ -62,15 +65,25 @@ java_setup (){
 	echo " - Installing default-jdk..."
 	apt install default-jdk -y
 	echo " ! Installed default-jdk."
+	echo " - Installing sdkman..."
+	curl -s "https://get.sdkman.io" | bash
+	source "$HOME/.sdkman/bin/sdkman-init.sh"
+	echo " ! Installed sdkman successfully."
 	echo " - Installing gradle..."
-	exec_dir=${pwd}
-	mkdir /opt/gradle
-	cd /opt/gradle
-	wget https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
-	unzip gradle-*-bin.zip
-	export PATH=$PATH:/opt/gradle/gradle-8.0.1/bin
-	cd $exec_dir
+	sdk install gradle
+	# Old code for setting up gradle:
+	# exec_dir=${pwd}
+	# mkdir /opt/gradle
+	# cd /opt/gradle
+	# wget https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
+	# unzip gradle-*-bin.zip
+	# export PATH=$PATH:/opt/gradle/gradle-8.0.1/bin
+	# cd $exec_dir
 	echo " ! Installed gradle."
+	echo " - Installing Kotlin..."
+	sdk install kotlin
+	sdk install ktx
+	echo " - Installed Kotlin successfully."
 }
 php_setup (){
 	exit
@@ -181,6 +194,7 @@ ask_for_root
 update_system
 install_basics
 while true; do
+	shell_setup
 	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Visual Studio Code + Firefox Setup"; do
 		case $op in
 			"JavaScript setup" ) javascript_setup; break;;
@@ -195,4 +209,3 @@ while true; do
 		esac
 	done
 done
-shell_setup
