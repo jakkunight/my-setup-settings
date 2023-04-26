@@ -303,7 +303,7 @@ n ()
     # stty lwrap undef
     # stty lnext undef
 
-    nnn "$@" -c -E -H -d -u -i
+    nnn "$@" -c -E -H -d -u
 
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
@@ -330,11 +330,11 @@ fi
 
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
-export ANDROID_TOOLCHAIN=/root/android/build-tools
+export ANDROID_TOOLCHAIN="${HOME}/android/build-tools"
 export PATH=$PATH:/opt/gradle/gradle-*/bin
 export DISPLAY=:1
 export PULSE_SERVER=tcp:127.0.0.1:4713
-cd /root
+cd $HOME
 n
 
 # Setups IDE layout.

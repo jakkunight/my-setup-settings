@@ -25,7 +25,7 @@ update_system (){
 }
 install_basics (){
 	echo " - Installing the basic tools... (git, curl, wget and htop)"
-	apt install git curl wget htop -y
+	apt install git curl wget htop zip unzip -y
 	echo " ! Tools installed."
 }
 javascript_setup (){
@@ -89,12 +89,7 @@ php_setup (){
 	exit
 }
 database_setup (){
-	echo " - Installing database engines... (mariadb, mongoose, mongod and sqlite3)"
-	apt install gnupg -y
-	wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-	echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-	apt update
-	apt install mongodb-org -y
+	echo " - Installing database engines... (mariadb, sqlite3)"
 	apt install mariadb sqlite -y || apt install mariadb-server sqlite3 -y
 	echo " ! All DATABASES ENGINES successfully installed."
 	echo " - Configuring MariaDB..."
@@ -150,7 +145,7 @@ tmux_setup (){
 	echo " - Installing tmux..."
 	apt install tmux -y
 	echo "Installing powerline..."
-	apt install poweerline -y
+	apt install powerline -y
 	echo " ! Tmux and Powerline successfully installed."
 	echo "Configuring..."
 	cp ./.tmux.conf	~/
@@ -195,7 +190,7 @@ update_system
 install_basics
 while true; do
 	shell_setup
-	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Visual Studio Code + Firefox Setup"; do
+	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Python Setup" "Visual Studio Code + Firefox Setup"; do
 		case $op in
 			"JavaScript setup" ) javascript_setup; break;;
 			"TMUX Setup" ) tmux_setup; break;;
@@ -205,6 +200,7 @@ while true; do
 			"DATABASE Setup" ) database_setup; break;;
 			"C++ Setup" ) cpp_setup; break;;
 			"Java Setup" ) java_setup; break;;
+			"Python Setup" ) python_setup; break;;
 			"Visual Studio Code + Firefox Setup" ) vscode_firefox_setup; break;;
 		esac
 	done
