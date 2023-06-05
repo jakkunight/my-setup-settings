@@ -281,6 +281,7 @@ stopvnc (){
 
 # Sets micro as default editor:
 export EDITOR=/bin/micro
+export VISUAL=/bin/micro
 
 n ()
 {
@@ -303,12 +304,13 @@ n ()
     # stty lwrap undef
     # stty lnext undef
 
-    nnn "$@" -c -E -H -d -u
+    nnn "$@" -c -E -H -d -u -e
 
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
+    clear
 }
 
 nnn_cd()
@@ -330,12 +332,14 @@ fi
 
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
+# export LC_ALL=es_PY.UTF-8
+# export LANG=es_PY.UTF-8
 export ANDROID_TOOLCHAIN="${HOME}/android/build-tools"
 export PATH=$PATH:/opt/gradle/gradle-*/bin
 export DISPLAY=:1
 export PULSE_SERVER=tcp:127.0.0.1:4713
-cd $HOME
-n
+#cd $HOME
+#n
 
 # Setups IDE layout.
 # C/C++ + SQL dev:
@@ -347,6 +351,7 @@ cpp(){
 		split-window -t Jakku:1 -v\; \
 		new-window -t Jakku:2 -n execution/testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
+		split-window -t Jakku:3 -v\; \
 		attach
 	fi
 }
@@ -358,6 +363,7 @@ java_gradle(){
 		new-window -t Jakku:1 -n code\; \
 		new-window -t Jakku:2 -n execution\; \
 		new-window -t Jakku:3 -n database/sql\; \
+		split-window -t Jakku:3 -v\; \
 		attach
 	fi
 }
@@ -366,11 +372,23 @@ js_fullstack(){
 	if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 		tmux -u \
 		new-session -s Jakku -n documentation/git\; \
+		send-keys "touch README.md && git init && n" Enter\; \
 		new-window -t Jakku:1 -n backend/server\; \
+		send-keys "mkdir server || cd server && n" Enter\; \
 		split-window -t Jakku:1 -v\; \
+		send-keys "cd server && clear" Enter\; \
+		split-window -t Jakku:1 -h\; \
+		send-keys "cd server && clear" Enter\; \
 		new-window -t Jakku:2 -n frontend/client\; \
+		send-keys "mkdir client || cd client && n" Enter\; \
 		split-window -t Jakku:2 -v\; \
+		send-keys "cd client && clear" Enter\; \
+		split-window -t Jakku:2 -h\; \
+		send-keys "cd client && clear" Enter\; \
 		new-window -t Jakku:3 -n database/sql\; \
+		send-keys "mkdir database || cd database && n" Enter\; \
+		split-window -t Jakku:3 -v\; \
+		send-keys "cd database && clear" Enter\; \
 		attach
 	fi
 }
@@ -381,8 +399,10 @@ js_backend(){
 		new-session -s Jakku -n documentation/git\; \
 		new-window -t Jakku:1 -n code/build\; \
 		split-window -t Jakku:1 -v\; \
+		split-window -t Jakku:1 -h\; \
 		new-window -t Jakku:2 -n execution/testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
+		split-window -t Jakku:3 -v\; \
 		attach
 	fi
 }
@@ -396,6 +416,7 @@ js_frontend(){
 		split-window -t Jakku:1 -h\; \
 		new-window -t Jakku:2 -n testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
+		split-window -t Jakku:3 -v\; \
 		attach
 	fi
 }
@@ -407,6 +428,7 @@ python_dev(){
 		new-window -t Jakku:1 -n code/build\; \
 		new-window -t Jakku:2 -n execution/testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
+		split-window -t Jakku:3 -v\; \
 		attach
 	fi
 }

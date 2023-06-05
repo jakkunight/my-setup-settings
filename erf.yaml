@@ -1,0 +1,64 @@
+filetype: enhanced reading
+
+detect:
+    filename: "(\\.erf$)"
+
+rules:
+    - constant.number: "\\b[-+]?([1-9][0-9]*|0[0-7]*|0x[0-9a-fA-F]+)([uU][lL]?|[lL][uU]?)?\\b"
+    - constant.number: "\\b[-+]?([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([EePp][+-]?[0-9]+)?[fFlL]?"
+    - constant.number: "\\b[-+]?([0-9]+[EePp][+-]?[0-9]+)[fFlL]?"
+    #- identifier: "[A-Za-z_][A-Za-z0-9_]*[[:space:]]*[(]"
+    # ^ this is not correct usage of the identifier color
+    - symbol.brackets: "(\\{|\\})"
+    - symbol.brackets: "(\\(|\\))"
+    - symbol.brackets: "(\\[|\\])"
+    - symbol.brackets: "(\\<|\\>)"
+    - symbol.operator: "([-+/*=<>!~%?:&|,;.#@]|[.]{3})"
+    - symbol.tag: "^[[:blank:]]*(\\[|<)[[:alnum:][:punct:][:blank:]\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]*(\\]|>)[[:punct:][:blank:][:alnum:]\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]*$"
+    - identifier: "(@[[:alnum:]]*|\\$[[:alnum:]]*|#[[:alnum:]]*)"
+    - identifier: "(@(\\{|\\(|\\[).*(\\}|\\)|\\])|\\$(\\{|\\(|\\[).*(\\}|\\)|\\])|#(\\{|\\(|\\[).*(\\}|\\)|\\]))"
+    
+    # - constant: "\\b()\\b"
+    - type: ":[[:alnum:]]+:"
+
+    # - constant: "/[^*]([^/]|(\\\\/))*[^\\\\]/[gim]*"
+    - constant: "\\\\[0-7][0-7]?[0-7]?|\\\\x[0-9a-fA-F]+|\\\\[bfnrt'\"\\?\\\\]"
+
+    # - identifier: "\\b(require|fetch)\\b"
+    - identifier: "([[:alpha:]]|_)+\\.([[:alnum:]]|_)+"
+
+    - constant.string:
+        start: "\""
+        end: "\""
+        skip: "\\\\."
+        rules:
+            - constant.specialChar: "\\\\."
+
+    - constant.string:
+        start: "'"
+        end: "'"
+        skip: "\\\\."
+        rules:
+            - constant.specialChar: "\\\\."
+
+    - constant.string:
+        start: "`"
+        end: "`"
+        rules:
+            - constant.specialChar: "\\\\."
+            - identifier: "\\x24\\{.*?\\}"
+
+    - comment:
+        start: "//"
+        end: "$"
+        rules:
+            - todo: "(TODO|XXX|FIXME)"
+
+    - comment:
+        start: "/\\*"
+        end: "\\*/"
+        rules:
+            # function documentation
+            - identifier: "\\s\\*\\s.*"
+            - todo: "(TODO|XXX|FIXME)"
+    - constant.string.url: "\\b(http(s)?|ftp(s)?|chrome|file|git|mysql|exp)\\b://[[:alnum:]_\\-\\.\\%\\+]+(/)?"
