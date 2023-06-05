@@ -27,6 +27,26 @@ install_basics (){
 	echo " - Installing the basic tools... (git, curl, wget and htop)"
 	apt install git curl wget htop zip unzip -y
 	echo " ! Tools installed."
+	echo " - Configuring ssh for git..."
+	printf "Insert your remote repo host email account: "
+	read email
+	ssh-keygen -t ed25519 -C "${email}"
+	printf "SSH AGENT PID: "
+	eval "$(ssh-agent -s)"
+	echo " - Adding key to ssh-agent..."
+	printf "Insert keyfile path: "
+	read keypath
+	ssh-add $keypath
+	echo " ! Successfully added!"
+	echo " - This is your public key. Use it with your remote repo host config to add the key:"
+	cat $keypath.pub
+	printf "Press ENTER to continue..."
+	read pause
+	echo " - Testing connection with the host. Is strongly recomended to provide the fingerprint manually instead of typing 'yes'."
+	printf "Insert your remote repo host URL: "
+	read host
+	ssh -T git@$host
+	echo " ! Success!"
 }
 javascript_setup (){
 	echo " - Installing node..."
