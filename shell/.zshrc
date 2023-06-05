@@ -1,3 +1,7 @@
+##############################################
+### BEGIN OF DEFAULT KALI NETHUNTER CONFIG ###
+##############################################
+
 # ~/.zshrc file for zsh interactive shells.
 # see /usr/share/doc/zsh/examples/zshrc for examples
 
@@ -257,24 +261,39 @@ if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
 
+############################################
+### END OF DEFAULT KALI NETHUNTER CONFIG ###
+############################################
+
+# By @JakkuNight
+# Here goes my own configuration:
+
+# Ends TMUX sessions and clears the screen:
 cleanup ()
 {
 	tmux kill-server
+	clear
 	exit
 }
+
+# Connects to PlanetScale via MySQL CLI:
 pscale ()
 {
 	mysql -h i36l79tdjaxk.us-east-4.psdb.cloud -u ueduqq6tfks3 -ppscale_pw_Hn7PhelQfTue-1ChT8liWextXuYGtEoK9ryk7zvSNDw --ssl-ca=/etc/ssl/certs/ca-certificates.crt
 }
+
+# Connects to DataBase4Free via MySQL CLI:
 db4free ()
 {
 	mysql -h db4free.net -u jakku_kun -p2ab+aa+bb
 }
 
+# Starts a VNC server with the i3 WM: 
 startvnc (){
 	vncserver -xstartup i3 -depth 32 -geometry 1280x768 -localhost yes -useold :1
 }
 
+# Kills a VNC server with the i3 WM: 
 stopvnc (){
 	vncserver -kill :1
 }
@@ -283,6 +302,7 @@ stopvnc (){
 export EDITOR=/bin/micro
 export VISUAL=/bin/micro
 
+# Enhanced NNN File Manager:
 n ()
 {
     # Block nesting of nnn in subshells
@@ -313,6 +333,8 @@ n ()
     clear
 }
 
+# I don't remember what this function does.
+# 'Cause of this, I can't remove it.
 nnn_cd()
 {
 	if ! [ -z "$NNN_PIPE" ]; then
@@ -323,6 +345,7 @@ nnn_cd()
 trap nnn_cd EXIT
 export nnn="$1"
 
+# NVM's config:
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
@@ -330,12 +353,19 @@ if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
 	source /usr/share/powerline/bindings/bash/powerline.sh
 fi
 
+# Sets local time to my own:
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
 # export LC_ALL=es_PY.UTF-8
 # export LANG=es_PY.UTF-8
+
+# Android Toolchain path:
 export ANDROID_TOOLCHAIN="${HOME}/android/build-tools"
+
+# Gradle's path:
 export PATH=$PATH:/opt/gradle/gradle-*/bin
+
+# Display and PulseAudio Server ports:
 export DISPLAY=:1
 export PULSE_SERVER=tcp:127.0.0.1:4713
 #cd $HOME
@@ -376,19 +406,19 @@ js_fullstack(){
 		new-window -t Jakku:1 -n backend/server\; \
 		send-keys "mkdir server || cd server && n" Enter\; \
 		split-window -t Jakku:1 -v\; \
-		send-keys "cd server && clear" Enter\; \
+		send-keys "mkdir server || cd server && clear" Enter\; \
 		split-window -t Jakku:1 -h\; \
-		send-keys "cd server && clear" Enter\; \
+		send-keys "mkdir server || cd server && clear" Enter\; \
 		new-window -t Jakku:2 -n frontend/client\; \
 		send-keys "mkdir client || cd client && n" Enter\; \
 		split-window -t Jakku:2 -v\; \
-		send-keys "cd client && clear" Enter\; \
+		send-keys "mkdir client || cd client && clear" Enter\; \
 		split-window -t Jakku:2 -h\; \
-		send-keys "cd client && clear" Enter\; \
+		send-keys "mkdir client || cd client && clear" Enter\; \
 		new-window -t Jakku:3 -n database/sql\; \
 		send-keys "mkdir database || cd database && n" Enter\; \
 		split-window -t Jakku:3 -v\; \
-		send-keys "cd database && clear" Enter\; \
+		send-keys "mkdir database || cd database && clear" Enter\; \
 		attach
 	fi
 }

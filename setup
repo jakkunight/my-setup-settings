@@ -105,15 +105,11 @@ editor_setup (){
 	apt install micro vim -y
 	echo " ! MICRO adn ViM successfully installed."
 	echo " - Configuring MICRO..."
-	echo " - Adding the SKT (Sketch) and PSC (Pseudocode) Language definition and darknight and nightmare-tc themes..."
-	mkdir ~/.config/micro/colorschemes
-	cp -f ./*.micro ~/.config/micro/colorschemes
-	mkdir ~/.config/micro/syntax
-	cp -f ./*.yaml ~/.config/micro/syntax
-	cp -f ./bindings.json ~/.config/micro
+	echo " - Adding custom MICRO configuration..."
+	cp -rf ./micro ~/.config/
 	echo " ! MICRO successfully configured."
-	echo " - Installing micro plugins... (quoter, comment, filemanager)"
-	micro -plugin install quoter
+	echo " - Installing micro plugins... (quotter, comment, filemanager)"
+	micro -plugin install quotter
 	micro -plugin install comment
 	micro -plugin install filemanager
 	echo " ! Successfully installed MICRO plugins."
@@ -148,8 +144,8 @@ tmux_setup (){
 	apt install powerline -y
 	echo " ! Tmux and Powerline successfully installed."
 	echo "Configuring..."
-	cp ./.tmux.conf	~/
-	cp ./default.json /usr/share/powerline/config_files/themes/tmux
+	cp ./shell/.tmux.conf	~/
+	cp ./powerline/default.json /usr/share/powerline/config_files/themes/tmux
 }
 golang_setup (){
 	exit
@@ -159,7 +155,7 @@ nginx_setup (){
 }
 shell_setup (){
 	echo " - Configuring the shell..."
-	cp -f .*shrc ~
+	cp -f ./shell/.*shrc ~/
 	echo " ! Shell configured."
 }
 nnn_setup (){
@@ -180,7 +176,7 @@ vscode_firefox_setup (){
 	apt update
 	echo " ! Added Microsoft's repos."
 	echo " - Installing code and firefox-esr..."
-	apt install code firefox-esr
+	apt install code firefox-esr -y
 	echo " ! Installed code and firefox-esr."
 }
 
