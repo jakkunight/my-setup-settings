@@ -74,7 +74,9 @@ python_setup (){
 	echo " ! Successfully intalled."
 }
 vnc_xfce4_setup (){
-	exit
+	echo " - Installing XFCE4 and TigerVNC..."
+	apt install xfce4 tigervnc-standalone-server -y
+	echo " ! XFCE4 and TigerVNC successfully installed!"
 }
 cpp_setup (){
 	echo " - Installing cmake and clang..."
@@ -206,7 +208,7 @@ update_system
 install_basics
 while true; do
 	shell_setup
-	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Python Setup" "Visual Studio Code + Firefox Setup"; do
+	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Python Setup" "Visual Studio Code + Firefox Setup" "VNC + XFCE4 Setup"; do
 		case $op in
 			"JavaScript setup" ) javascript_setup; break;;
 			"TMUX Setup" ) tmux_setup; break;;
@@ -218,6 +220,7 @@ while true; do
 			"Java Setup" ) java_setup; break;;
 			"Python Setup" ) python_setup; break;;
 			"Visual Studio Code + Firefox Setup" ) vscode_firefox_setup; break;;
+			"VNC + XFCE4 Setup")	vnc_xfce4_setup; break;;
 		esac
 	done
 done
