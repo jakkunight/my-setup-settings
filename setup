@@ -209,24 +209,30 @@ wget_installer(){
 
 # Installs the basic tools required to work correctly
 basics(){
+	info "Changing /home/$(whoami) property..."
+	if sudo chown -R $(whoami) /home/$(whoami); then
+		success "Now the HOME owns to its user!.\n"
+	else
+		fatal "Something were wrong. Please retry as ROOT or rerun the script\n"
+	fi
 	info "Updating the system...\n"
 	if sudo apt update && sudo apt upgrade -y; then
 		success "Now the system is up-to-date.\n"
 	else
-		fatal "Something were wrong. Please retry as ROOT or rereun the script\n"
+		fatal "Something were wrong. Please retry as ROOT or rerun the script\n"
 	fi
 	info "Installing nala...\n"
 	if sudo apt install nala; then
 		success "nala has been installed!\n"
 	else
-		fatal "Something were wrong. Please retry as ROOT or rereun the script\n"
+		fatal "Something were wrong. Please retry as ROOT or rerun the script\n"
 	fi
 	info "Using nala to install all packages...\n"
 	info "Installing git, wget, curl and htop...\n"
 	if sudo nala install git wget curl htop -y; then
 		success "git, wget, curl and htop have been installed!\n"
 	else
-		fatal "Something were wrong. Please retry as ROOT or rereun the script\n"
+		fatal "Something were wrong. Please retry as ROOT or rerun the script\n"
 	fi
 	info "Adding Microsoft's repos...\n"
 	info "Importing GPG key...\n"
@@ -297,12 +303,12 @@ tmux_powerline(){
 		error "This is not a fatal error, so youneed to install it manually or jus use Tmux alone.\n"
 	fi
 	info "Configuring TMUX with Powerline...\n"
-	if cp ./shell/.tmux.conf ~/; then
+	if sudo cp -f ./shell/.tmux.conf ~/; then
 		info "Configured TMUX.\n"
 	else
 		warning "Couldn't configure TMUX.\n"
 	fi
-	if cp ./powerline/default.json /usr/share/powerline/config_files/themes/tmux; then
+	if sudo cp -f ./powerline/default.json /usr/share/powerline/config_files/themes/tmux; then
 		info "Configured Powerline.\n"
 	else
 		warning "Couldn't configure Powerline.\n"
@@ -433,7 +439,7 @@ shell_config(){
 		fi
 	fi
 	info "Replacing shell config files...\n"
-	if sudo cp -f ./shell/.*shrc ~/; then
+	if sudo cp -rf ./shell/.*shrc ~/; then
 		success "Shell configured!\n"
 	else
 		error "Couldn't configure shell...\n"
@@ -449,7 +455,7 @@ micro_config(){
 		error "Couldn't configure shell...\n"
 	fi
 	info "Installing plugins... (quotter, filemanager, comment)"
-	if micro -plugin install quoter && micro -plugin install coment && micro -plugin install filemanager; then
+	if micro -plugin install snippets && micro -plugin install comment && micro -plugin install filemanager; then
 		success "New plugins added to micro!"
 	else
 		error "Could not add the new plugins to micro."
