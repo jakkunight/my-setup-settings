@@ -1,226 +1,487 @@
-#!/usr/bin/bash
-print_banner (){
-	echo "#############################################################################################"
-	echo "#                                                                                           #"
-	echo "#    Setup Script Installer for Developers/Hackers/Content Creators/etc (SSI)               #"
-	echo "#    Author: Jakku Night (aka @jakkunight on GitHub and @jakku_night on XDA Developers)     #"
-	echo "#    This can be found here: https://github.com/jakkunight/my-setup-settings                #"
-	echo "#    This script ONLY WORKS on DEBIAN-BASED DISTROS!!! Modify for use on other distros.     #"
-	echo "#                                                                                           #"
-	echo "#############################################################################################"
-}
-ask_for_root (){
-	echo "Are you a ROOT user? (aka SUPERUSER or ADMINISTRATOR) [Y/n]"
-	read is_root
-	if [[ $is_root == n || $is_root == N ]]; then
-		 echo "You need ROOT privileges to execute this script. Please re-run this script as ROOT and try again."
-		 exit
+#!/bin/bash
+#
+# Script to mount my configs on any Debian-based linux distro.
+# Author: Jakku Night (@jakkunight on GitHub and XDA Developers, jakku_night on Twitch and Jakku Night on YouTube.)
+#
+# This script and configurations are based on my own preferences, so if you want to add or remove features, 
+# feel free to fork/clone this repo (https://github.com/jakkunight/my-setup-settings) and do your stuffs.
+# I'm not responsable for damaging your system, making your computer blow up or something similar.
+# YOU HAVE BEEN WARNED.
+
+# Define shell colors through ANSI ESCAPE SEQUENCES:
+green="\e[32m"
+red="\e[31m"
+yellow="\e[33m"
+blue="\e[34m"
+lgreen="\e[92m"
+lyellow="\e[93m"
+lblue="\e[94m"
+lmagenta="\e[95m"
+lcyan="\e[96m"
+blink_red="\033[05;31m"
+restore="\033[0m"
+reset="\e[0m"
+
+# Define status logging functions:
+# Shows an error message with colors:
+# Usage: error <message>
+# Example: error "An unexpected error ocurred."
+error(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Unknwon ERROR. Aborting..."
 	fi
-}
-update_system (){
-	echo " - Updating your system..."
-	apt update -y
-	apt upgrade -y
-	echo " ! System up-to-date."
-}
-install_basics (){
-	echo " - Installing the basic tools... (git, curl, wget and htop)"
-	apt install git curl wget htop zip unzip -y
-	echo " ! Tools installed."
-	echo " - Configuring ssh for git..."
-	printf "Insert your remote repo host email account: "
-	read email
-	ssh-keygen -t ed25519 -C "${email}"
-	printf "SSH AGENT PID: "
-	eval "$(ssh-agent -s)"
-	echo " - Adding key to ssh-agent..."
-	printf "Insert keyfile path: "
-	read keypath
-	ssh-add $keypath
-	echo " ! Successfully added!"
-	echo " - This is your public key. Use it with your remote repo host config to add the key:"
-	cat $keypath.pub
-	printf "Press ENTER to continue..."
-	read pause
-	echo " - Testing connection with the host. Is strongly recomended to provide the fingerprint manually instead of typing 'yes'."
-	printf "Insert your remote repo host URL: "
-	read host
-	ssh -T git@$host
-	echo " ! Success!"
-}
-javascript_setup (){
-	echo " - Installing node..."
-	apt install nodejs -y
-	echo " ! Node.js was installed."
-	echo " - Installing npm@latest..."
-	curl -qL https://www.npmjs.com/install.sh | sh
-	echo " ! NPM successfully installed."
-	echo " - Installing yarn..."
-	apt install yarnpkg -y || apt install yarn -y
-	echo " ! Yarn successfully installed."
-	echo " - Installing nvm..."
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-	echo " ! Successfully installed NVM. Please restart your terminal to load changes."
-	echo " - Installing pnpm..."
-	curl -fsSL https://get.pnpm.io/install.sh | sh -
-	echo "! Pnpm successfully installed."
-}
-python_setup (){
-	echo " - Installing python-is-python3..."
-	apt install python-is-python3 -y
-	echo " ! Successfully intalled."
-	echo " - Installing pip..."
-	apt install python3-pip --fix-missing -y
-	echo " ! Successfully intalled."
-}
-vnc_xfce4_setup (){
-	echo " - Installing XFCE4 and TigerVNC..."
-	apt install xfce4 tigervnc-standalone-server -y
-	echo " ! XFCE4 and TigerVNC successfully installed!"
-}
-cpp_setup (){
-	echo " - Installing cmake and clang..."
-	apt install cmake clang -y
-	echo " ! Successfully installed."
-}
-java_setup (){
-	echo " - Installing default-jdk..."
-	apt install default-jdk -y
-	echo " ! Installed default-jdk."
-	echo " - Installing sdkman..."
-	curl -s "https://get.sdkman.io" | bash
-	source "$HOME/.sdkman/bin/sdkman-init.sh"
-	echo " ! Installed sdkman successfully."
-	echo " - Installing gradle..."
-	sdk install gradle
-	# Old code for setting up gradle:
-	# exec_dir=${pwd}
-	# mkdir /opt/gradle
-	# cd /opt/gradle
-	# wget https://services.gradle.org/distributions/gradle-8.0.1-bin.zip
-	# unzip gradle-*-bin.zip
-	# export PATH=$PATH:/opt/gradle/gradle-8.0.1/bin
-	# cd $exec_dir
-	echo " ! Installed gradle."
-	echo " - Installing Kotlin..."
-	sdk install kotlin
-	sdk install ktx
-	echo " - Installed Kotlin successfully."
-}
-php_setup (){
-	exit
-}
-database_setup (){
-	echo " - Installing database engines... (mariadb, sqlite3)"
-	apt install mariadb sqlite -y || apt install mariadb-server sqlite3 -y
-	echo " ! All DATABASES ENGINES successfully installed."
-	echo " - Configuring MariaDB..."
-	service mariadb start
-	mysql_secure_installation
-	echo " ! MariadDB has been configured." 
-}
-aircrack_ng_setup (){
-	exit
-}
-editor_setup (){
-	echo " - Installing terminal editors... (micro and vim)"
-	apt install micro vim -y
-	echo " ! MICRO adn ViM successfully installed."
-	echo " - Configuring MICRO..."
-	echo " - Adding custom MICRO configuration..."
-	cp -rf ./micro ~/.config/
-	echo " ! MICRO successfully configured."
-	echo " - Installing micro plugins... (quotter, comment, filemanager)"
-	micro -plugin install quotter
-	micro -plugin install comment
-	micro -plugin install filemanager
-	echo " ! Successfully installed MICRO plugins."
-}
-decrypt_tools_setup (){
-	exit
-}
-bruteforce_tools (){
-	exit
-}
-samba (){
-	echo " - Installing samba..."
-	apt install samba -y
-	echo " ! SAMBA successfully installed."
-	echo " - Configuring samba..."
-	nano /etc/samba/smb.conf
-	echo "Input the username for samba to access to the shared resource:"
-	read name
-	smbpasswd -a $name
-	echo " ! SAMBA successfully configured."
-}
-lua_setup (){
-	exit
-}
-apache_setup (){
-	exit
-}
-tmux_setup (){
-	echo " - Installing tmux..."
-	apt install tmux -y
-	echo "Installing powerline..."
-	apt install powerline -y
-	echo " ! Tmux and Powerline successfully installed."
-	echo "Configuring..."
-	cp ./shell/.tmux.conf	~/
-	cp ./powerline/default.json /usr/share/powerline/config_files/themes/tmux
-}
-golang_setup (){
-	exit
-}
-nginx_setup (){
-	exit
-}
-shell_setup (){
-	echo " - Configuring the shell..."
-	cp -f ./shell/.*shrc ~/
-	echo " ! Shell configured."
-}
-nnn_setup (){
-	echo " - Installing nnn..."
-	apt install nnn -y
-	echo " ! NNN successfully installed."
+	printf "${red}[ERROR]: ${msg}${reset}"
 }
 
-vscode_firefox_setup (){
-	echo " - Installing gpg..."
-	apt install gpg
-	echo " ! gpg installed."
-	echo " - Adding Microsoft's repos to apt..."
-	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-	sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-	rm -f packages.microsoft.gpg
-	apt update
-	echo " ! Added Microsoft's repos."
-	echo " - Installing code and firefox-esr..."
-	apt install code firefox-esr -y
-	echo " ! Installed code and firefox-esr."
+# Shows an info message with colors:
+# Usage: info <message>
+# Example: info "Executing command..."
+info(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Nothing to notify."
+	fi
+	printf "${lcyan}[INFO]: ${msg}${reset}"
 }
 
-print_banner
-ask_for_root
-update_system
-install_basics
-while true; do
-	shell_setup
-	select op in "JavaScript setup" "TMUX Setup" "NNN Setup" "Editors Setup" "SAMBA Setup" "DATABASE Setup" "C++ Setup" "Java Setup" "Python Setup" "Visual Studio Code + Firefox Setup" "VNC + XFCE4 Setup"; do
-		case $op in
-			"JavaScript setup" ) javascript_setup; break;;
-			"TMUX Setup" ) tmux_setup; break;;
-			"NNN Setup" ) nnn_setup; break;;
-			"Editors Setup" ) editor_setup; break;;
-			"SAMBA Setup" ) samba_setup; break;;
-			"DATABASE Setup" ) database_setup; break;;
-			"C++ Setup" ) cpp_setup; break;;
-			"Java Setup" ) java_setup; break;;
-			"Python Setup" ) python_setup; break;;
-			"Visual Studio Code + Firefox Setup" ) vscode_firefox_setup; break;;
-			"VNC + XFCE4 Setup")	vnc_xfce4_setup; break;;
+# Shows an success message with colors:
+# Usage: success <message>
+# Example: success "Done."
+success(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Successfully ended."
+	fi
+	printf "${lgreen}[SUCCESS]: ${msg}${reset}"
+}
+
+# Shows an warning message with colors:
+# Usage: warning <message>
+# Example: warning "An unexpected error ocurred."
+warning(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="An error ocurred."
+	fi
+	printf "${lyellow}[WARNING]: ${msg}${reset}"
+}
+
+# Asks a "Y/N" question:
+# Usage: ask <question> <default>
+# Example: ask "Proceed?" "Y"
+ask(){
+	# Original function by:
+	# http://djm.me/ask
+	# Modifiyed for personal use by @jakkunight
+	while true; do
+
+		if [ "${2:-}" = "Y" ]; then
+			prompt="Y/n"
+			default=Y
+		elif [ "${2:-}" = "N" ]; then
+			prompt="y/N"
+				default=N
+		else
+				prompt="y/n"
+				default=
+		fi
+
+		# Ask the question
+		printf "${lblue}[QUESTION]: ${1} [${prompt}]${reset} "
+		read REPLY
+
+		# Default?
+		if [ -z "$REPLY" ]; then
+			REPLY=$default
+		fi
+
+		# Check if the reply is valid
+		case "$REPLY" in
+			Y*|y*) return 0 ;;
+			N*|n*) return 1 ;;
 		esac
 	done
-done
+}
+
+# Pauses the program execution until the user presses ENTER:
+pause(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Press ENTER to continue..."
+	fi
+	printf "${lmagenta}${msg}${reset}"
+	read pause
+}
+
+# Critical Error and Exit:
+fatal(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Unknwon ERROR. Aborting..."
+	fi
+	error $msg
+	pause
+	exit
+}
+
+# Shows a menu with options and returns the selected option:
+# Usage: menu <title> <options>
+# Example: cities=("Madrid" "Paris" "London" "Rome" "Berlin" "Amsterdam" "Tokyo" "Kyoto"); menu "Choose a city:" ${cities}
+menu(){
+	local title="$1"
+	shift
+	local options=("$@")
+	if [[ -z "$title" ]]; then
+		title="Choose an option:"
+	fi
+	printf "${lmagenta}"
+	printf "${title}\n"
+	select option; do
+		if [[ 1 -le "$REPLY" && "$REPLY" -le "$#" ]]; then
+			info "Choosed $option\n"
+			return $(($REPLY-1));
+		else
+			warning "Choose a valid between 1~$#: \n"
+			printf "${lmagenta}"
+		fi
+	done
+	printf "${reset}\n"
+}
+
+# Package installing:
+apt_installer(){
+	local package="$@"
+	if [[ -z "$package" ]]; then
+		error "No package provided for installation!\n"
+		return 1
+	fi
+	if sudo apt install ${package} -y; then
+		success "Installed ${package}!\n"
+		return 0
+	else
+		error "Couldn't install ${package}\n"
+		return 1
+	fi
+}
+
+nala_installer(){
+	local package="$@"
+	if [[ -z "$package" ]]; then
+		error "No package provided for installation!\n"
+	fi
+	if sudo nala install ${package} -y; then
+		success "Installed ${package}!\n"
+		return 0
+	else
+		error "Couldn't install ${package}\n"
+		return 1
+	fi
+}
+
+curl_installer(){
+	local package="$1"
+	shift
+	local script="$@"
+	if [[ -z "$script" ]]; then
+		error "No script provided for installation. Aborting...\n"
+	fi
+	if curl -sL ${script} | sudo sh -; then
+		success "Installed ${package}!\n"
+	else
+		error "Couldn't install ${package}. Try again.\n"
+	fi
+}
+
+wget_installer(){
+	local package="$1"
+	shift
+	local script="$@"
+	if [[ -z "$script" ]]; then
+		error "No script provided for installation!\n"
+	fi
+	if wget -O - "$script" | sudo sh -; then
+		success "Installed ${package}\n"
+	else
+		error "Couldn't install ${package}. Try again.\n"
+	fi
+}
+
+# Installs the basic tools required to work correctly
+basics(){
+	info "Updating the system...\n"
+	if sudo apt update && sudo apt upgrade -y; then
+		success "Now the system is up-to-date.\n"
+	else
+		fatal "Something were wrong. Please retry as ROOT or rereun the script\n"
+	fi
+	info "Installing nala...\n"
+	if sudo apt install nala; then
+		success "nala has been installed!\n"
+	else
+		fatal "Something were wrong. Please retry as ROOT or rereun the script\n"
+	fi
+	info "Using nala to install all packages...\n"
+	info "Installing git, wget, curl and htop...\n"
+	if sudo nala install git wget curl htop -y; then
+		success "git, wget, curl and htop have been installed!\n"
+	else
+		fatal "Something were wrong. Please retry as ROOT or rereun the script\n"
+	fi
+	info "Adding Microsoft's repos...\n"
+	info "Importing GPG key...\n"
+	if wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg; then
+		success "Downloaded GPG keys.\n"
+	else
+		fatal "An error occurred when downloading the GPG keys. Aborting...\n"
+	fi
+	if sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg; then
+		success "Installed GPG keys on the system.\n"
+	else
+		fatal "An error occurred when attempting to install the GPG keys. Aborting...\n"
+	fi
+	info "Adding sources to /etc/apt/sources.d\n"
+	if sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'; then
+		success "Added sources to package manager.\n"
+	else
+		fatal "An unexpected error occurred when adding the sources. Aborting...\n"
+	fi
+	info "Cleaning extra files...\n"
+	rm -f packages.microsoft.gpg
+	info "Updating sources...\n"
+	if sudo nala update; then
+		success "Added Microsoft's repos for Visual Studio Code!\n"
+	else
+		error "Couldn't add Microsoft's repos!!!\n"
+		fatal "If you want to install Visual Studio Code, do it by downloading the .deb installer from https://code.visualstudio.com/download\n"
+	fi
+}
+
+# Installs the text editors:
+text_editors(){
+	info "Installing text editors...\n"
+	# Options list to show in the menu:
+	local options=("micro" "vim" "neovim" "mousepad" "nano" "VS Code")
+	# Package list to install with nala:
+	local packages=("micro" "vim" "neovim" "mousepad" "nano" "code")
+	while true; do
+		menu "Select your text editor: " "${options[@]}"
+		local result="$?"
+		if sudo nala install ${packages[$result]} -y; then
+			success "Installed ${options[$result]}!\n"
+		else
+			error "Couldn't install ${options[$result]}.\n"
+		fi
+		if ask "Do you want to install another text editor?" "Y"; then
+			info "Proceeding...\n"
+		else
+			success "Done.\n"
+			break;
+		fi
+	done
+}
+
+# Installs tmux and powerline:
+tmux_powerline(){
+	info "Installing tmux...\n"
+	if sudo nala install tmux -y; then
+		success "Installed TMUX!\n"
+	else
+		fatal "Error when installing tmux\n"
+	fi
+	info "Installing powerline...\n"
+	if sudo nala install powerline -y; then
+		success "Installed Powerline!\n"
+	else
+		error "Couldn't install Powerline.\n"
+		error "This is not a fatal error, so youneed to install it manually or jus use Tmux alone.\n"
+	fi
+	info "Configuring TMUX with Powerline...\n"
+	if cp ./shell/.tmux.conf ~/; then
+		info "Configured TMUX.\n"
+	else
+		warning "Couldn't configure TMUX.\n"
+	fi
+	if cp ./powerline/default.json /usr/share/powerline/config_files/themes/tmux; then
+		info "Configured Powerline.\n"
+	else
+		warning "Couldn't configure Powerline.\n"
+	fi
+	success "Done.\n"
+}
+
+# Installs the tools for C/C++ development:
+cpp_tools(){
+	info "Installing C/C++ dev tools...\n"
+	local options=("CLang Compiler" "GCC Compiler")
+	local packages=("clang clangd" "gcc g++")
+	while true; do
+		menu "Select your C/C++ compiler:" "${options[@]}"
+		local result="$?"
+		if sudo nala install ${packages[$result]} -y; then
+			success "Installed ${options[$result]}\n"
+		else
+			error "Couldn't install ${options{$result}}\n"
+		fi
+		if ask "Do you want to install another compiler?" "Y"; then
+			info "Proceeding...\n"
+		else
+			success "Done.\n"
+			break;
+		fi
+	done
+	options=("CMake" "Ninja")
+	packages=("cmake" "ninja-build")
+	while true; do
+		menu "Select your C/C++ build system:" "${options[@]}"
+		local result="$?"
+		if sudo nala install ${packages[$result]} -y; then
+			success "Installed ${options[$result]}\n"
+		else
+			error "Couldn't install ${options{$result}}\n"
+		fi
+		if ask "Do you want to install another build system?" "Y"; then
+			info "Proceeding...\n"
+		else
+			success "Done.\n"
+			break;
+		fi
+	done
+}
+
+# Installs JavaScript dev tools:
+js_tools(){
+	info "Installing NodeJS...\n"
+	if sudo nala install nodejs -y; then
+		success "NodeJS is now installed!\n"
+	else
+		error "Couldn't install NodeJS. Leaving...\n"
+	fi
+	info "Installing npm...\n"
+	if curl -qL https://www.npmjs.com/install.sh | sudo sh; then
+		success "npm is now installed!\n"
+	else
+		error "Couldn't install npm. Leaving...\n"
+	fi
+	info "Installing Performance NPM...\n"
+	if curl -fsSL https://get.pnpm.io/install.sh | sudo sh -; then
+		success "Performance NPM is now installed!\n"
+	else
+		error "Couldn't install Performance NPM. Leaving...\n"
+	fi
+	info "Installing NVM..."
+	if curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | sudo bash; then
+		success "NVM is now installed!\n"
+	else
+		error "Couldn't install NVM. Leaving...\n"
+	fi
+}
+
+# Installs Python dev tools:
+python_tools(){
+	info "Installing Python-is-Python3...\n"
+	if sudo nala install python-is-python3 -y; then
+		success "Python-is-Python3 is now installed!\n"
+	else
+		error "Couldn't install Python-is-Python3. Leaving...\n"
+	fi
+	info "Installing pip...\n"
+	if sudo nala install python3-pip -y; then
+		success "pip is now installed!\n"
+	else
+		error "Couldn't install pip. Leaving...\n"
+	fi
+}
+
+# Installs NNN:
+nnn_setup(){
+	info "Installing NNN...\n"
+	if sudo nala install nnn -y; then
+		success "NNN is now installed!\n"
+	else
+		error "Couldn't install NNN. Leaving...\n"
+	fi
+}
+
+# Installs LaTeX (TeX-Live):
+latex_setup(){
+	info "Installing LaTeX...\n"
+	info "This will take A LOT, so leave it to your dummy Latam-PC and go to do another stuff.\n"
+	if sudo nala install texlive-full -y; then
+		success "LaTeX was installed correctly!\n"
+	else
+		error "An error occurred when installing LaTeX.\n"
+	fi
+}
+
+# Shell configs:
+shell_config(){
+	info "Setting ZSH as the DEFAULT shell..."
+	if sudo chsh -s $(which zsh); then
+		success "Changed the current shell to ZSH!"
+	else
+		fatal "Unable to configure the shell! (ZSH)"
+	fi
+	info "Backing up your old config files to \"~/.oldconf\"...\n"
+	if sudo mkdir ~/.oldconf || sudo cp -f ~/.*shrc ~/.oldconf; then
+		success "Your old config was backed up to \"~/.oldconf\"!\n"
+	else
+		error "Old config was not backed up!\n"
+		if ! ask "Do you want to proceed?" "N"; then
+			error "Operation aborted by the user. Aborting...\n"
+			return 1
+		fi
+	fi
+	info "Replacing shell config files...\n"
+	if sudo cp -f ./shell/.*shrc ~/; then
+		success "Shell configured!\n"
+	else
+		error "Couldn't configure shell...\n"
+	fi
+}
+
+# Micro configs:
+micro_config(){
+	info "Replacing micro configs and adding custom features...\n"
+	if sudo cp -rf ./micro ~/.config/; then
+		success "Micro configured!\n"
+	else
+		error "Couldn't configure shell...\n"
+	fi
+	info "Installing plugins... (quotter, filemanager, comment)"
+	if micro -plugin install quoter && micro -plugin install coment && micro -plugin install filemanager; then
+		success "New plugins added to micro!"
+	else
+		error "Could not add the new plugins to micro."
+	fi
+	
+}
+
+# Print the welcome banner:
+banner(){
+	printf "${lgreen}"
+	echo "*************************************************************************************"
+	echo "*                        My Setup Settings! - @jakkunight                           *"
+	echo "*                                                                                   *"
+	echo "*             Source: https://github.com/jakkunight/my-setup-settings               *"
+	echo "*************************************************************************************"
+	echo ""
+	printf "${reset}"
+	warning "This script only works for Debian-based distros. Modify to use in other distros under your own risk.\n"
+	warning "By using this script, you accept the risks it could bring to you, like data loss, useless programs/packages installed or broken dependencies.\n"
+	warning "USE THIS UNDER YOUR OWN RISK OR READ THE SICRIPT AND MODIFY TO PREVENT THE PROBLEMS MENTIONED ABOVE!!!\n"
+	warning "YOU HAVE BEEN WARNED!!!\n"
+}
+
+
+banner
+basics
+text_editors
+tmux_powerline
+js_tools
+cpp_tools
+python_tools
+latex_setup
+nnn_setup
+shell_config
+micro_config
