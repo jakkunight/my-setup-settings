@@ -5,7 +5,7 @@
 #
 # This script and configurations are based on my own preferences, so if you want to add or remove features, 
 # feel free to fork/clone this repo (https://github.com/jakkunight/my-setup-settings) and do your stuffs.
-# I'm not responsable for damaging your system, making your computer blow up or something similar.
+# I'm not responsable for damaging your system, making your computer blow up or causing a thermonuclear war.
 # YOU HAVE BEEN WARNED.
 
 # Define shell colors through ANSI ESCAPE SEQUENCES:
@@ -209,7 +209,7 @@ wget_installer(){
 
 # Installs the basic tools required to work correctly
 basics(){
-	info "Changing /home/$(whoami) property..."
+	info "Changing /home/$(whoami) property...\n"
 	if sudo chown -R $(whoami) /home/$(whoami); then
 		success "Now the HOME owns to its user!.\n"
 	else
@@ -260,6 +260,31 @@ basics(){
 	else
 		error "Couldn't add Microsoft's repos!!!\n"
 		fatal "If you want to install Visual Studio Code, do it by downloading the .deb installer from https://code.visualstudio.com/download\n"
+	fi
+	info "Adding Cloudflare's repos...\n"
+	info "Importing GPG key...\n"
+	if curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg; then
+		success "Downloaded GPG keys.\n"
+	else
+		fatal "An error occurred when downloading the GPG keys. Aborting...\n"
+	fi
+	if echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list; then
+		success "Installed GPG keys on the system.\n"
+	else
+		fatal "An error occurred when attempting to install the GPG keys. Aborting...\n"
+	fi
+	info "Adding sources to /etc/apt/sources.d\n"
+	if echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list; then
+		success "Added sources to package manager.\n"
+	else
+		fatal "An unexpected error occurred when adding the sources. Aborting...\n"
+	fi
+	info "Updating sources...\n"
+	if sudo nala update; then
+		success "Added Cloudflare's repos for Cloudflare 1.1.1.1!\n"
+	else
+		error "Couldn't add Cloudflare's repos!!!\n"
+		fatal "If you want to install Cloudflare 1.1.1.1, do it by following the instructions on https://pkg.cloudflareclient.com/#debian\n"
 	fi
 }
 
@@ -420,6 +445,12 @@ latex_setup(){
 	fi
 }
 
+# Link to download Discord:
+# https://discord.com/api/download?platform=linux&format=deb
+
+# Link to download Unreal Engine:
+# https://ucs-blob-store.s3-accelerate.amazonaws.com/blobs/bb/23/fb99-7e96-4f4b-8a0f-678684655c9d?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIA2SBBZFECM5TO7XXO%2F20230622%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230622T021054Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHIaCXVzLWVhc3QtMSJGMEQCICsFsc1pZ%2BYaYk%2Bn7URxEkdVYGj4om91AVa33aLaOmzBAiBs3nLhXtFHu6ELA%2BcbKrv7R3oA5Ea4utclYPa7d6NcUyqPBQjL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAEaDDcyNTkyMDMyNzk0MCIMIFZfhRFMi9lCpSyXKuMEFKBIKhXztZuRKgyqmAKW%2F518Oo%2BV6NzNwd85M53tfs4Ek34gxx4Lnxds54fK8kjn%2FYZ5yVNl9MoNN4p7%2FbTOQNpfIEC74NDx14dv5H9E0u8cXlq0i5%2FDYj2CMQyagO4%2Byts2IdkisPMpjfQE4WX0TX0NPaa00EnMWWjECD%2Bbr0LzAGZCJ9%2BcNUhC%2F9fHo0J4zmwj50G0hVVem%2FGtfrlAx6AHhJ32CaAt8MQ7HgxWYpIZdJezz8SJEv4p2vj9raEIgqXwxuAF6naZ2Jtch0qiudtdIhPEOqI7y3hUtsZl9qucMMGPFT%2BhoB4HSlfBqn5%2BYnjzt4sOkuuygFg99rHEW4%2FUtWcsZrEt0Y9KrsoOYTZif%2BK2vvuYmwyEpUUpA40Zf8d6M8w8CYHkq7SfWo0UDR4mz47LDCP2MDodz24jwiOGz15ZiM%2BRKvDqW7385P6Bo8piUNuqGpANFyE%2FQl2GWM5oN2enczMwsV8JdrGJVcm4qu7upeIrtkwTxdQiXhd9vUrghkjXSJEPaTeYltZjMnXnJf3bIwe1tSnzKVh%2F6KW4%2BBlB1X2jt%2F9mCulk4bzxI4zyLh3ifc5uBvVlULqlm1F8AqxM2AYYekt2IfUxdalIBx6uvqBDhoqVCpduxSxgaIq%2BQV%2FJKN4%2FT3LekmdAA0KJqIH6qY%2BX42dHl%2BwYcnqV1DDkAY1GGliiY08zPZPQWZurn3Jdo5fOyrNWFYUi1%2B3foI7zjZvFIYeQHdD5Urb1W41IM8SADTeXrUNmRzDBK464qfKr%2FQn4rDI%2BUevrBpatk5L2Ogp6U%2Bw6J2svI799loow79XOpAY6mwGEbvyz%2BkNxFY17z76N3osdF9qYcaBbhpI8LZPNCtQHchDncW50WIXfxwyl4NEsLRjOoBP0Az3Bg%2B3UsfaaWqj5MW%2B%2BN4oTaJHq%2BVpUAe%2Bdik7uKA7%2FABQ6XCURBraRV0FwWmhO9Zdlqlf5w%2B1gmfVUGATL2t7FzGD5MpC82NT40NjjZ8INWFzknVGJX69jpCNLCiONyfMhp4SIkg%3D%3D&X-Amz-Signature=92fd4a7af0ba337ef7f992426fae625c66e0f653a0f00b34eecc05c1aacc295c&X-Amz-SignedHeaders=host&response-content-disposition=inline%3Bfilename%3D%22file.zip%22%3Bfilename%2A%3DUTF-8%27%27Linux_Unreal_Engine_5.2.1.zip&x-id=GetObject
+
 # Shell configs:
 shell_config(){
 	info "Setting ZSH as the DEFAULT shell..."
@@ -463,6 +494,19 @@ micro_config(){
 	
 }
 
+# Ask for root:
+check_root(){
+	info "Checking for ROOT/SUDO PERMISSIONS...\n"
+	if [[ $(whoami) == "root" ]]; then
+		info "Running as $(whoami)...\n"
+		HOME="/$(whoami)"
+		return 0
+	fi
+	info "Running as $(whoami) with SUDO PERMISSIONS...\n"
+	HOME="/home/$(whoami)"
+	return 1
+}
+
 # Print the welcome banner:
 banner(){
 	printf "${lgreen}"
@@ -481,6 +525,7 @@ banner(){
 
 
 banner
+check_root
 basics
 text_editors
 tmux_powerline
