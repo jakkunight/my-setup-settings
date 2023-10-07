@@ -366,8 +366,8 @@ export ANDROID_TOOLCHAIN="${HOME}/android/build-tools"
 export PATH=$PATH:/opt/gradle/gradle-*/bin
 
 # Display and PulseAudio Server ports:
-export DISPLAY=:0
-export PULSE_SERVER=tcp:127.0.0.1:4713
+# export DISPLAY=:0
+# export PULSE_SERVER=tcp:127.0.0.1:4713
 # Give PulseAudio priority over ALSA:
 SDL_AUDIODRIVER=pulseaudio
 # Save ALSAmixer changes:
