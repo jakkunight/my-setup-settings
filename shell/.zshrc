@@ -354,8 +354,8 @@ if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
 fi
 
 # Sets local time to my own:
-rm -rf /etc/localtime
-ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
+# rm -rf /etc/localtime
+# ln -s /usr/share/zoneinfo/America/Asuncion /etc/localtime
 # export LC_ALL=es_PY.UTF-8
 # export LANG=es_PY.UTF-8
 
@@ -366,8 +366,14 @@ export ANDROID_TOOLCHAIN="${HOME}/android/build-tools"
 export PATH=$PATH:/opt/gradle/gradle-*/bin
 
 # Display and PulseAudio Server ports:
-export DISPLAY=:1
+export DISPLAY=:0
 export PULSE_SERVER=tcp:127.0.0.1:4713
+# Give PulseAudio priority over ALSA:
+SDL_AUDIODRIVER=pulseaudio
+# Save ALSAmixer changes:
+alsactl --file ~/.config/asound.state restore
+# Alias for ALSAmixer:
+alias alsamixer="sudo alsamixer && sudo alsactl --file ~/.config/asound.state store"
 #cd $HOME
 #n
 
@@ -382,6 +388,10 @@ cpp(){
 		new-window -t Jakku:2 -n execution/testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
 		split-window -t Jakku:3 -v\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -394,6 +404,10 @@ java_gradle(){
 		new-window -t Jakku:2 -n execution\; \
 		new-window -t Jakku:3 -n database/sql\; \
 		split-window -t Jakku:3 -v\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -419,6 +433,10 @@ js_fullstack(){
 		send-keys "mkdir database || cd database && n" Enter\; \
 		split-window -t Jakku:3 -v\; \
 		send-keys "mkdir database || cd database && clear" Enter\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -433,6 +451,10 @@ js_backend(){
 		new-window -t Jakku:2 -n execution/testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
 		split-window -t Jakku:3 -v\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -447,6 +469,10 @@ js_frontend(){
 		new-window -t Jakku:2 -n testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
 		split-window -t Jakku:3 -v\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -459,6 +485,10 @@ python_dev(){
 		new-window -t Jakku:2 -n execution/testing\; \
 		new-window -t Jakku:3 -n database/sql\; \
 		split-window -t Jakku:3 -v\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -469,6 +499,10 @@ bash_scripting(){
 		new-session -s Jakku -n documentation/git\; \
 		new-window -t Jakku:1 -n code/build\; \
 		new-window -t Jakku:2 -n execution/testing\; \
+		unbind-key -n S-UP\; \
+		unbind-key -n S-DOWN\; \
+		unbind-key -n S-LEFT\; \
+		unbind-key -n S-RIGHT\; \
 		attach
 	fi
 }
@@ -481,3 +515,11 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# bun completions
+[ -s "/home/jakku/.bun/_bun" ] && source "/home/jakku/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
