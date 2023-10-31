@@ -129,11 +129,13 @@ editor_setup (){
 	echo " - Configuring MICRO..."
 	echo " - Adding custom MICRO configuration..."
 	cp -rf ./micro ~/.config/
+	cp -rf ./micro/**/*.* ~/.config/micro
 	echo " ! MICRO successfully configured."
 	echo " - Installing micro plugins... (quotter, comment, filemanager)"
 	micro -plugin install quotter
 	micro -plugin install comment
 	micro -plugin install filemanager
+	micro -plugin install snippets
 	echo " ! Successfully installed MICRO plugins."
 }
 decrypt_tools_setup (){
