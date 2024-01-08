@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Script to mount my configs on any Debian-based linux distro.
+# Author: Jakku Night (@jakkunight on GitHub and XDA Developers, jakku_night on Twitch and Jakku Night on YouTube.)
+#
+# This script and configurations are based on my own preferences, so if you want to add or remove features, 
+# feel free to fork/clone this repo (https://github.com/jakkunight/my-setup-settings) and do your stuffs.
+# I'm not responsable for damaging your system, making your computer blow up or causing a thermonuclear war.
+# YOU HAVE BEEN WARNED.
+#
+# Basic tools, needed to install other tools:
+basic(){
+	info "Installing the basic setup..."
+	info "Installing git, curl, wget, build-essential, cmake, ninja, aria2 and clang"
+	if ! pkgman git curl wget build-essential cmake ninja-build aria2 clang; then
+		fatal "Could not install the basic programs to mount the rest of the setup."
+	fi
+	warning "Flatpak is optional, but it will give you access to app that are not aviable via the package manager."
+	if ! ask "Do you want to install flatpak?" "Y"; then
+		info "Skipping flatpak..."
+		success "Installed all the basic tools!"
+		return 0
+	fi
+	info "Installing flatpak..."
+	if ! pkgman flatpak; then
+		warning "Couldn't install flatpak."
+		success "Installed all the basic tools!"
+		return 0	
+	fi
+	success "Installed flatpak!"
+	info "Adding FlatHub repos..."
+	if ! flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo; then
+		warning "Couldn't add FlatHub repos!"
+		info "Skipping..."
+		success "Installed all the basic tools!"
+		return 0
+	fi
+	success "Added flatpak repos!"
+	success "Installed all the basic tools!"
+	return 0
+}
+
+
+# Management tools, needed to control the system:
+managers(){
+	info "Installing management tools..."
+	info "Installing alsa-utils, pavucontrol, pactl, udisks2, udiskie, dhcpcd, wpasupplicant and network-manager..."
+	if ! pkgman alsa-utils pavucontrol pactl udisks2 udiskie dhcpc wpasupplicant network-manager; then
+		error "Failed to install management tools."
+		return 1
+	fi
+	success "Installed all management tools!"
+	return 0
+}
