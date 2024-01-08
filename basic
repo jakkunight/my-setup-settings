@@ -11,8 +11,8 @@
 # Basic tools, needed to install other tools:
 basic(){
 	info "Installing the basic setup..."
-	info "Installing git, curl, wget, build-essential, cmake, ninja, aria2 and clang"
-	if ! pkgman git curl wget build-essential cmake ninja-build aria2 clang; then
+	info "Installing git, curl, wget, build-essential, golang, cmake, ninja, aria2 and clang"
+	if ! pkgman git curl wget build-essential cmake golang ninja-build aria2 clang; then
 		fatal "Could not install the basic programs to mount the rest of the setup."
 	fi
 	warning "Flatpak is optional, but it will give you access to app that are not aviable via the package manager."
@@ -50,5 +50,23 @@ managers(){
 		return 1
 	fi
 	success "Installed all management tools!"
+	return 0
+}
+
+# NerdFonts:
+nerd_fonts(){
+	info "Installing NerdFonts..."
+	if ! git clone https://github.com/ryanoasis/nerd-fonts nerd-fonts; then
+		error "Cannot install Nerd Fonts!!!"
+		return 1
+	fi
+	cd nerd-fonts
+	if ! ./install.sh Hack; then
+		error "Cannot install Hack Nerd Fonts!!!"
+		return 1
+	fi
+	cd ..
+	rm -rf ./nerd-fonts
+	success "Installed Hack Nerd Fonts!"
 	return 0
 }

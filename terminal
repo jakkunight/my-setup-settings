@@ -21,7 +21,7 @@ tmux_from_gh(){
 		info "Using pakage manager instead..."
 		return 1
 	fi
-	if ! git clone https://github.com/tmux/tmux.git; then
+	if ! git clone https://github.com/tmux/tmux.git ./tmux; then
 		warning "Could not clone the repo."
 		info "Using package manager instead..."
 		return 1
@@ -29,26 +29,60 @@ tmux_from_gh(){
 	cd tmux
 	if ! "$runas" ./autogen.sh; then
 		warning "Couldn't generate the makefile."
-		info ""
 		info "Using pakage manager instead..."
 		return 1
 	fi
-	if "$runas" ./configure && "$runas" make; then
-		
+	if ! "$runas" ./configure && "$runas" make; then
+		warning "Couldn't install Tmux."
+		info "Using pakage manager instead..."
+		return 1
 	fi
+	success "Installed Tmux!"
+	return 0
+}
+micro_from_gh(){
+	info "Installing micro from GitHub..."
+	if ! git clone https://github.com/zyedidia/micro micro; then
+		cd .. && rm -rf micro
+		warning "Cannot clone the repo!"
+		info "Installing from package manager..."
+		return 1
+	fi
+	cd micro
+	if ! make build; then
+		cd .. && rm -rf micro
+		warning "Micro has not been installed."
+		info "Installing from package manager..."
+		return 1
+	fi
+	"$runas" mv micro /usr/local/bin
+	cd .. && rm -rf micro
+	success "Micro has been installed!"
+	return 0
 }
 terminal(){
 	info "Installing terminal utilities..."
 	
-	if ! pkgman tmux; then
-		warning "Could not install tmux!"
+	if ! tmux_from_gh; then
+		if ! pkgman tmux; then
+			warning "Could not install tmux!"
+			warning "Skipping..."
+		else
+			success "Installed tmux!"
+		fi
 	fi
-	success "Installed tmux!"
+	
 	info "Customizing tmux statusline..."
 	info "Installing micro..."
-	if ! pkgman micro; then
-		warning "Could not install micro!"
+	if ! micro_from_gh; then
+		if ! pkgman micro; then
+			warning "Could not install micro!"
+			warning "Skipping..."
+		else
+			success "Installed Micro!"
+		fi
 	fi
+	
 	info "Customizing micro..."
 	info "Installing htop, zsh, zsh-syntax-highlighting and zsh-autosuggestions..."
 	if ! pkgman zsh zsh-syntax-highlighting zsh-autosuggestions htop;then
