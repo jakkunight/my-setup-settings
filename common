@@ -1,0 +1,221 @@
+#!/bin/bash
+#
+# Script to mount my configs on any Debian-based linux distro.
+# Author: Jakku Night (@jakkunight on GitHub and XDA Developers, jakku_night on Twitch and Jakku Night on YouTube.)
+#
+# This script and configurations are based on my own preferences, so if you want to add or remove features, 
+# feel free to fork/clone this repo (https://github.com/jakkunight/my-setup-settings) and do your stuffs.
+# I'm not responsable for damaging your system, making your computer blow up or causing a thermonuclear war.
+# YOU HAVE BEEN WARNED.
+
+# Define shell colors through ANSI ESCAPE SEQUENCES:
+green="\e[32m"
+red="\e[31m"
+yellow="\e[33m"
+blue="\e[34m"
+lgreen="\e[92m"
+lyellow="\e[93m"
+lblue="\e[94m"
+lmagenta="\e[95m"
+lcyan="\e[96m"
+blink_red="\033[05;31m"
+restore="\033[0m"
+reset="\e[0m"
+
+# Define status logging functions:
+# Shows an error message with colors:
+# Usage: error <message>
+# Example: error "An unexpected error ocurred."
+error(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Unknwon ERROR. Aborting..."
+	fi
+	printf "${red}[ERROR]: ${msg}${reset}\n"
+}
+
+# Shows an info message with colors:
+# Usage: info <message>
+# Example: info "Executing command..."
+info(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Nothing to notify."
+	fi
+	printf "${lcyan}[INFO]: ${msg}${reset}\n"
+}
+
+# Shows an success message with colors:
+# Usage: success <message>
+# Example: success "Done."
+success(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Successfully ended."
+	fi
+	printf "${lgreen}[SUCCESS]: ${msg}${reset}\n"
+}
+
+# Shows an warning message with colors:
+# Usage: warning <message>
+# Example: warning "An unexpected error ocurred."
+warning(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="An error ocurred."
+	fi
+	printf "${lyellow}[WARNING]: ${msg}${reset}\n"
+}
+
+# Asks a "Y/N" question:
+# Usage: ask <question> <default>
+# Example: ask "Proceed?" "Y"
+ask(){
+	# Original function by:
+	# http://djm.me/ask
+	# Modifiyed for personal use by @jakkunight
+	while true; do
+
+		if [ "${2:-}" = "Y" ]; then
+			prompt="Y/n"
+			default=Y
+		elif [ "${2:-}" = "N" ]; then
+			prompt="y/N"
+				default=N
+		else
+				prompt="y/n"
+				default=
+		fi
+
+		# Ask the question
+		printf "${lblue}[QUESTION]: ${1} [${prompt}]${reset} "
+		read REPLY
+
+		# Default?
+		if [ -z "$REPLY" ]; then
+			REPLY=$default
+		fi
+
+		# Check if the reply is valid
+		case "$REPLY" in
+			Y*|y*) return 0 ;;
+			N*|n*) return 1 ;;
+		esac
+	done
+}
+
+# Pauses the program execution until the user presses ENTER:
+pause(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Press ENTER to continue..."
+	fi
+	printf "${lmagenta}${msg}${reset}\n"
+	read pause
+}
+
+# Critical Error and Exit:
+fatal(){
+	local msg="$@"
+	if [[ -z $msg ]]; then
+		msg="Unknwon ERROR. Aborting...\n"
+	fi
+	error $msg
+	pause
+	exit 1
+}
+
+# Shows a menu with options and returns the selected option:
+# Usage: menu <title> <options>
+# Example: cities=("Madrid" "Paris" "London" "Rome" "Berlin" "Amsterdam" "Tokyo" "Kyoto"); menu "Choose a city:" ${cities}
+menu(){
+	local title="$1"
+	shift
+	local options=("$@")
+	if [[ -z "$title" ]]; then
+		title="Choose an option:"
+	fi
+	printf "${lmagenta}"
+	printf "${title}\n"
+	select option; do
+		if [[ 1 -le "$REPLY" && "$REPLY" -le "$#" ]]; then
+			info "Choosed $option\n"
+			return $(($REPLY-1));
+		else
+			warning "Choose a valid between 1~$#: \n"
+			printf "${lmagenta}"
+		fi
+	done
+	printf "${reset}\n"
+}
+
+check_root(){
+	info "Checking for ROOT permissions..."
+	info "Getting user info..."
+	export user="$(whoami)"
+	export uid="$(id -u)"
+	info "Found user ${user} with UID ${uid}"
+	if [ "$uid" == "0" ]; then
+		export HOME="/root"
+		info "HOME directory is in ${HOME}"
+		success "You have ROOT permissions!"
+		export runas=""
+		return 0
+	fi
+	info "HOME directory is in ${HOME}"
+	warning "You may have no ROOT permissions!"
+	info "Checking for 'sudo'..."
+	if [[ -f "/usr/bin/sudo" || -f "/bin/sudo" ]]; then
+		success "You have sudo installed in your system!"
+		info "Checking your sudo rights..."
+		if ! sudo printf "\e[32mYOU HAVE SUDO ACCESS\e[0m\n"; then
+			fatal "CANNOT USE SUDO!!! Try again as ROOT."
+		fi
+		success "You can use sudo to run the script!"
+		export runas="sudo"
+		return 0
+	fi
+	fatal "You have not permisions to make changes on the system."
+}
+
+# Install Nala:
+nala_install(){
+	# Check for root:
+	check_root
+	info "Looking up for Nala..."
+	if which nala; then
+		success "Nala is already installed!"
+		return 0
+	fi
+	info "Nala was not found!"
+	info "Installing nala..."
+	"$runas" apt update
+	if ! "$runas" apt install nala; then
+		error "Nala can't be installed."
+		info "Using APT..."
+		return 1
+	fi
+	success "Nala installed correctly!"
+	info "Using Nala instead of APT..."
+	return 0
+}
+
+# Installs a given list of packages.
+# Usage: pkgman pkg1 pkg2 pkg3 ...
+pkgman(){
+	# Check for root:
+	check_root
+	# Check for Nala:
+	if ! nala_install; then
+		if ! "$runas" apt install "$@"; then
+			error "One or more packages were not installed."
+			return 1
+		fi
+	fi
+	if ! "$runas" nala install "$@"; then
+		error "One or more packages were not installed."
+		return 1
+	fi
+	success "All packages installed!"
+	return 0
+}

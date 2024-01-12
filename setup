@@ -8,7 +8,31 @@
 # I'm not responsable for damaging your system, making your computer blow up or causing a thermonuclear war.
 # YOU HAVE BEEN WARNED.
 
-source "./commons.sh"
-source "./shell.sh"
 
+# Import modules:
+source ./commons.sh
+source ./shell.sh
+
+# Print the welcome banner:
+banner(){
+	printf "${lblue}"
+	printf "+------------------------------------------------------------------------------------------------------+\n"
+	printf "|                                                                                                      |\n"
+	printf "|                                      My Setup Settings (MSS)                                         |\n"
+	printf "|                                    By @jakkunight (Jakku Night)                                      |\n"
+	printf "|                                                                                                      |\n"
+	printf "| This script and configurations are based on my own preferences, so if you want to add or remove      |\n"
+	printf "| features, feel free to fork/clone this repo (https://github.com/jakkunight/my-setup-settings) and do |\n"
+	printf "| your stuffs. I'm not responsable for damaging your system, making your computer blow up or causing   |\n"
+	printf "| a thermonuclear war. YOU HAVE BEEN WARNED.                                                           |\n"
+	printf "|                                                                                                      |\n"
+	printf "+------------------------------------------------------------------------------------------------------+\n"
+	printf "${reset}"
+	return 0
+}
+
+
+# Execution:
+banner
 shell_setup
+
