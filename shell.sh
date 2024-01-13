@@ -18,24 +18,40 @@
 # 	
 
 # Import common lib:
-source "./commons.sh"
+source commons.sh
+
+# Check for root:
+check_root
 
 # Hack Nerd Fonts:
 install_hack_nf(){
 	info "Installing Hack Nerd Fonts..."
-	if ! "$runas" mkdir -p ~/.local/share/fonts; then
+	if ! "$runas" mkdir -p /usr/local/share/fonts; then
 		warning "Font dir already exists!"
+		info "Cleaning..."
+		"$runas" mv /usr/local/share/fonts /usr/local/share/fonts.bak
+		"$runas" rm -rf /usr/local/share/fonts
 	fi
 	mkdir fonts
 	cd fonts
 	info "Downloading fonts..."
-	"$runas" curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/Hack.tar.xz
-	info "Decompressing tarball..."
-	tar -xf Hack.tar.xz
+	curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/Hack.zip
+	info "Decompressing file..."
+	unzip Hack.zip
+  info "Patching fonts..."
+	info "Downloading font-patcher..."
+	curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FontPatcher.zip
+  info "Decompressing file..."
+  unzip FontPatcher.zip
+  info "Patching fonts..."
+  for f in ./Hack*.ttf; do
+      fontforge -script font-patcher $f
+  done
 	cd ..
 	info "Copying..."
-	"$runas" cp -rf fonts ~/.local/share/fonts
+	"$runas" cp -rf fonts/Hack*.ttf /usr/local/share/fonts
 	rm -rf fonts
+  "$runas" fc-cache -fv /usr/local/share/fonts
 	success "Hack Nerd Fonts are installed!"
 	return 0
 }
@@ -54,6 +70,9 @@ install_zsh_pkg(){
 # Powerlevel10k:
 install_pl10k(){
 	info "Installing Powerlevel10k..."
+	if [ -d ~/powerlevel10k ]; then
+		"$runas" rm -rf ~/powerlevel10k
+	fi
 	if ! git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k; then
 		error "Could not install Powerlevel10k."
 		return 1
@@ -90,6 +109,9 @@ install_tokyonight_plug(){
 
 install_tpm(){
 	info "Installing TPM..."
+	if [ -d ~/.tmux ]; then
+		"$runas" rm -rf ~/.tmux
+	fi
 	if ! git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; then
 		error "Cannot install TPM."
 		return 0
@@ -97,9 +119,9 @@ install_tpm(){
 	success "Installed TPM!"
 	info "Configuring..."
 	if [ -f ~/.tmux.conf ]; then
-		"$runas" rm -f ~/.tmux.conf
+		rm -f ~/.tmux.conf
 	fi
-	"$runas" touch ~/.tmux.conf
+	touch ~/.tmux.conf
 	echo "set -g mouse on" >> ~/.tmux.conf
 	echo "set -g history-limit 5000" >> ~/.tmux.conf
 	echo "set -g default-terminal 'xterm-256color'" >> ~/.tmux.conf
@@ -132,7 +154,7 @@ install_micro_pkg(){
 # NeoVim:
 install_nvim_gh(){
 	info "Installing necessary tools for building NeoVim..."
-	if ! pkg ninja-build gettext cmake unzip curl; then
+	if ! pkg gettext; then
 		error "Cannot install necessary tools for building NeoVim. Aborting..."
 		return 1
 	fi
@@ -164,6 +186,9 @@ install_nvchad_gh(){
 	fi
 	success "You are able to use all NV_CHAD features!"
 	info "Installing NV_CHAD..."
+	if [ -d ~/.config/nvim ]; then
+		"$runas" rm -rf ~/.config/nvim
+	fi
 	if ! git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim; then
 		"$runas" rm -rf ~/.config/nvim
 		"$runas" mkdir ~/.config/nvim
@@ -192,10 +217,12 @@ shell_setup(){
 	if ! install_micro_pkg; then
 		return 1
 	fi
-	if ! install_neovim_gh; then
+	if ! install_nvim_gh; then
 		return 1
 	fi
 	if ! install_nvchad_gh; then
 		return 1
 	fi
 }
+
+install_hack_nf

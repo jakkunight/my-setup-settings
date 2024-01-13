@@ -152,17 +152,17 @@ check_root(){
 	HOME=""
 	runas=""
 	if "$USER_ID" == "0"; then
-		HOME="/${USER_NAME}"
-		runas=""
+		export HOME="/${USER_NAME}"
+		export runas=""
 		success "You have ROOT ACCESS!"
 		return 0
 	fi
-	HOME="/home/USER_NAME"
+	export HOME="/home/${USER_NAME}"
 	warning "You may not have sudo permissions."
 	info "Testing sudo access..."
 	
 	if sudo echo "SUDO ACCESS..."; then
-		runas="sudo"
+		export runas="sudo"
 		success "You have SUDO ACCESS!"
 		return 1
 	fi
@@ -186,8 +186,7 @@ check_network(){
 # Usage: pkg <package_list>
 # Example: pkg curl wget git
 pkg(){
-	local pkg_list="$@"
-	if "$runas" apt install "$pkg_list" -y; then
+	if "$runas" apt install "$@" -y; then
 		success "Installed all packages."
 		return 0
 	fi

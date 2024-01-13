@@ -34,5 +34,6 @@ banner(){
 
 # Execution:
 banner
+check_root
 shell_setup
 
