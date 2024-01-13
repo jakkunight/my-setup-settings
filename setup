@@ -31,9 +31,17 @@ banner(){
 	return 0
 }
 
+basic(){
+  if ! pkg curl wget zip unzip git aria2c alacritty sakura build-essentials cmake clang hg; then
+    abort "Cannot install the necessary tools to install/build the rest of the setup!"
+  fi
+  success "Tools installed!"
+  return 0
+}
 
 # Execution:
 banner
 check_root
+basic
 shell_setup
 

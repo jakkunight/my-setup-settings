@@ -49,7 +49,7 @@ install_hack_nf(){
   done
 	cd ..
 	info "Copying..."
-	"$runas" cp -rf fonts/Hack*.ttf /usr/local/share/fonts
+	"$runas" cp -rf fonts /usr/local/share/fonts
 	rm -rf fonts
   "$runas" fc-cache -fv /usr/local/share/fonts
 	success "Hack Nerd Fonts are installed!"
@@ -224,5 +224,3 @@ shell_setup(){
 		return 1
 	fi
 }
-
-install_hack_nf
