@@ -198,6 +198,39 @@ install_nvchad_gh(){
 	success "You are now a GIGA CHAD of coding with NV_CHAD!"
 }
 
+install_nnn_gh(){
+	info "Installng NNN from sources..."
+	info "Downloading sources..."
+	if ! git clone https://github.com/jarun/nnn; then
+		error "Cannot download the sources. Aborting..."
+		return 1
+	fi
+	cd nnn
+	if ! pkg pkg-config libncursesw5-dev libreadline-dev; then
+		error "Necessary tools for building NNN could not be installed. Aborting..."
+		return 1
+	fi
+	info "Building and installing..."
+	if ! "$runas" make O_NERD=1 strip install; then
+		error "Couldn't install NNN. Installing from package manager instead..."
+		return 1
+	fi
+	cd ..
+	"$runas" rm -rf nnn
+	success "Installed NNN!"
+	return 0
+}
+
+install_nnn_pkg(){
+	info "Installing NNN from package manager..."
+	if ! pkg nnn; then
+		error "Cannot install NNN! Aborting..."
+		return 1
+	fi
+	success "Installed NNN!"
+	return 0
+}
+
 shell_setup(){
 	if ! install_hack_nf; then
 		return 1
@@ -223,4 +256,11 @@ shell_setup(){
 	if ! install_nvchad_gh; then
 		return 1
 	fi
+	if install_nnn_gh; then
+		return 0
+	fi
+	if ! install_nnn_pkg; then
+		return 1
+	fi
+	return 0	
 }
