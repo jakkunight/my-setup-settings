@@ -231,6 +231,19 @@ install_nnn_pkg(){
 	return 0
 }
 
+install_alacritty_pkg(){
+  info "Installing alacritty..."
+  if ! pkg alacritty; then 
+    error "Couldn install alacritty!"
+    return 1 
+  fi
+  success "Installed alacritty!"
+  info "Configuring..."
+  mkdir ~/.config/alacritty
+  echo "#Font configuration" >> ~/.config/alacritty/alacritty.yml
+  echo "font:" >> ~/.config/alacritty/alacritty.yml
+}
+
 shell_setup(){
 	if ! install_hack_nf; then
 		return 1
