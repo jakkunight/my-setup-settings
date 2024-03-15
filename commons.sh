@@ -147,11 +147,11 @@ menu(){
 # Example: check_root
 check_root(){
 	info "Getting user data..."
-	USER_NAME="$(whoami)"
-	USER_ID="$(id -u)"
+	USER_NAME=$(whoami)
+	USER_ID=$(id -u)
 	HOME=""
 	runas=""
-	if "$USER_ID" == "0"; then
+	if [ "${USER_ID}" == "0" ]; then
 		export HOME="/${USER_NAME}"
 		export runas=""
 		success "You have ROOT ACCESS!"
