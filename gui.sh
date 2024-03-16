@@ -9,6 +9,38 @@
 # YOU HAVE BEEN WARNED.
 #
 # GUI environment:
+
+source commons.sh
+
+install_i3wm_pkg(){
+  if ! pkg i3; then
+    return 1
+  fi
+  return 0
+}
+
+install_rofi_pkg(){
+  if ! pkg rofi; then
+    return 1
+  fi
+  return 0
+}
+
+configure_polybar(){
+  info "Copying dotfiles..."
+  if [ -d "~/.config/" ]; then 
+    "$runas" mkdir ~/.config
+  fi
+  "$runas" cp -rf ./dotfiles/polybar ~/.config
+
+}
+
+install_polybar_pkg(){
+  if ! pkg polybar; then
+    return 1
+  fi
+
+}
 gui(){
 	info "Installing GUI environment..."
 	info "Installing i3wm, polybar and rofi..."

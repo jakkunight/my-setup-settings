@@ -198,6 +198,7 @@ install_nvchad_gh(){
 	success "You are now a GIGA CHAD of coding with NV_CHAD!"
 }
 
+# NNN:
 install_nnn_gh(){
 	info "Installng NNN from sources..."
 	info "Downloading sources..."
@@ -231,6 +232,9 @@ install_nnn_pkg(){
 	return 0
 }
 
+
+# Terminal Emulators:
+# Alacritty:
 install_alacritty_pkg(){
   info "Installing alacritty..."
   if ! pkg alacritty; then 
@@ -239,9 +243,9 @@ install_alacritty_pkg(){
   fi
   success "Installed alacritty!"
   info "Configuring..."
-  mkdir ~/.config/alacritty
-  echo "#Font configuration" >> ~/.config/alacritty/alacritty.yml
-  echo "font:" >> ~/.config/alacritty/alacritty.yml
+  if [ -d "~/.config/alacritty" ]; then
+    "$runas" mv -rf ~/.config/alacritty/alacritty.yml 
+  
 }
 
 shell_setup(){
@@ -275,5 +279,8 @@ shell_setup(){
 	if ! install_nnn_pkg; then
 		return 1
 	fi
+  
+  success "YOUR SHELL IS FULLY CONFIGURED!!!"
+
 	return 0	
 }
