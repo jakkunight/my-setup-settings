@@ -124,13 +124,13 @@ fatal(){
 menu(){
 	local title="$1"
 	shift
-	local options=("$@")
+	#local options=("$@")
 	if [[ -z "$title" ]]; then
 		title="Choose an option:"
 	fi
 	printf "${lmagenta}"
 	printf "${title}\n"
-	select option; do
+	select option in $@; do
 		if [[ 1 -le "$REPLY" && "$REPLY" -le "$#" ]]; then
 			info "Choosed $option\n"
 			return $(($REPLY-1));
@@ -193,3 +193,5 @@ pkg(){
 	error "Could not install the packages."
 	return 1
 }
+
+
