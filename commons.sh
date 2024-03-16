@@ -153,7 +153,7 @@ check_root(){
 	runas=""
 	if [ "${USER_ID}" == "0" ]; then
 		export HOME="/${USER_NAME}"
-		export runas=""
+		export runas="sudo"
 		success "You have ROOT ACCESS!"
 		return 0
 	fi
@@ -186,7 +186,7 @@ check_network(){
 # Usage: pkg <package_list>
 # Example: pkg curl wget git
 pkg(){
-	if "$runas" apt install "$@" -y; then
+	if "$runas" apt install $@ -y; then
 		success "Installed all packages."
 		return 0
 	fi
