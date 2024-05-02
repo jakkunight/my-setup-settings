@@ -101,10 +101,10 @@ install_tmux_pkg(){
 	return 0
 }
 
-install_tokyonight_plug(){
-	info "Installing tokyonight theme for Tmux..."
-	echo 'set -g @plugin "janoamaral/tokyo-night-tmux"' >> ~/.tmux.conf
-	return 0
+config_tmux(){
+  info "Copying TMUX config files..."
+  "$runas" cp -rf ./dotfiles/.tmux.conf ~/.tmux.conf
+  success "Tmux configured."
 }
 
 install_tpm(){
@@ -121,16 +121,7 @@ install_tpm(){
 	if [ -f ~/.tmux.conf ]; then
 		rm -f ~/.tmux.conf
 	fi
-	touch ~/.tmux.conf
-	echo "set -g mouse on" >> ~/.tmux.conf
-	echo "set -g history-limit 5000" >> ~/.tmux.conf
-	echo "set -g default-terminal 'xterm-256color'" >> ~/.tmux.conf
-	# Your plugin installer function here:
-	install_tokyonight_plug
-	echo "# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)" >> ~/.tmux.conf
-	echo "run '~/.tmux/plugins/tpm/tpm'" >> ~/.tmux.conf
-	success "Installed TPM!"
-	info "tmux source ~/.tmux.conf # Run this to reload the Tmux config and then press 'Prefix-I'"
+  config_tmux
 	return 0
 }
 
@@ -179,6 +170,13 @@ install_nvim_gh(){
 	return 0
 }
 
+config_nvchad(){
+  info "Configuring NvChad..."
+  "$runas" cp -rf ./dotfiles/nvim ~/.config/nvim/
+  success "Successfully configured NvChad"
+  return 0
+}
+
 install_nvchad_gh(){
 	info "Installing dependencies..."
 	if ! pkg tree-sitter-cli lua5.4; then
@@ -187,14 +185,21 @@ install_nvchad_gh(){
 	success "You are able to use all NV_CHAD features!"
 	info "Installing NV_CHAD..."
 	if [ -d ~/.config/nvim ]; then
-		"$runas" rm -rf ~/.config/nvim
+		"$runas" cp -rf ~/.config/nvim ~/.config/nvim_bak
 	fi
-	if ! git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim; then
-		"$runas" rm -rf ~/.config/nvim
+  if ! git clone https://github.com/NvChad/starter ~/.config/nvim && nvim; then
+    "$runas" rm -rf ~/.config/nvim
+    if [ -d ~/.config/nvim ]; then
+      "$runas" cp -rf ~/.config/nvim_bak ~/.config/nvim
+      error "You are NOT enough \"CHAD\" to install NV CHAD."
+      return 1
+    fi
 		"$runas" mkdir ~/.config/nvim
 		error "You are NOT enough \"CHAD\" to install NV CHAD."
 		return 1
 	fi
+  info "Configuring NvChad..."
+  config_nvchad
 	success "You are now a GIGA CHAD of coding with NV_CHAD!"
 }
 
@@ -234,7 +239,7 @@ install_nnn_pkg(){
 install_alacritty_pkg(){
   info "Installing alacritty..."
   if ! pkg alacritty; then 
-    error "Couldn install alacritty!"
+    error "Couldn't install alacritty!"
     return 1 
   fi
   success "Installed alacritty!"
@@ -242,6 +247,16 @@ install_alacritty_pkg(){
   mkdir ~/.config/alacritty
   echo "#Font configuration" >> ~/.config/alacritty/alacritty.yml
   echo "font:" >> ~/.config/alacritty/alacritty.yml
+}
+
+install_btop_pkg(){
+  info "Installng btop..."
+  if ! pkg btop; then 
+    error "Couldn't install btop!"
+    return 1
+  fi
+  success "Installed btop!"
+  return 0
 }
 
 shell_setup(){
@@ -275,5 +290,8 @@ shell_setup(){
 	if ! install_nnn_pkg; then
 		return 1
 	fi
+  if ! install_btop_pkg; then
+    return 1
+  fi
 	return 0	
 }

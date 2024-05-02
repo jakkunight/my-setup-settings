@@ -9,6 +9,9 @@
 # YOU HAVE BEEN WARNED.
 #
 # GUI environment:
+
+
+
 gui(){
 	info "Installing GUI environment..."
 	info "Installing i3wm, polybar and rofi..."

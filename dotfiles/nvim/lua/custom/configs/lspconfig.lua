@@ -4,37 +4,19 @@ local capabilities = configs.capabilities
 
 local lspconfig = require "lspconfig"
 local servers = {
-  -- Basic LSP Server:
   "html",
   "cssls",
   "clangd",
+  "astro",
   "tsserver",
-  "emmet_language_server",
-  "emmet_ls",
+  "sqlls",
+  "pylyzer",
+  "pyright",
+  "rust_analyzer",
   "marksman",
   "mdx_analyzer",
-  "pyre",
-  "bashls",
-  "dotls",
-  "sqlls",
-  "yamlls",
-  "prismals",
   "tailwindcss",
-  "jsonls",
-
-  -- Rarely use LSP servers:
-  "rust_analyzer",
-  "svelte",
-  "powershell_es",
-  "kotlin_language_server",
-  "java_language_server",
-  "htmx",
-  "gradle_ls",
-  "golangci_lint_ls",
-  "csharp_ls",
-  "cssmodules_ls",
-  "cmake",
-  "astro",
+  "emmet_ls"
 }
 
 for _, lsp in ipairs(servers) do
@@ -44,4 +26,15 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- Without the loop, you would have to manually set up each LSP 
+-- 
+-- lspconfig.html.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+-- }
+--
+-- lspconfig.cssls.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+-- }
 

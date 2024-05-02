@@ -12,6 +12,7 @@
 # Import modules:
 source ./commons.sh
 source ./shell.sh
+source ./dev.sh
 
 # Print the welcome banner:
 banner(){
@@ -32,7 +33,7 @@ banner(){
 }
 
 basic(){
-  if ! pkg curl wget zip unzip git aria2 alacritty sakura build-essential cmake clang; then
+  if ! pkg curl wget zip unzip git aria2 alacritty sakura build-essential cmake clang nala sudo; then
     abort "Cannot install the necessary tools to install/build the rest of the setup!"
   fi
   success "Tools installed!"
@@ -44,4 +45,4 @@ banner
 check_root
 basic
 shell_setup
-
+dev_setup

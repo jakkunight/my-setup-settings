@@ -1,12 +1,33 @@
+local cmp = require "cmp"
+
 local plugins = {
+  -- {
+  --   "rust-lang/rust.vim",
+  --   ft = "rust",
+  --   init = function ()
+  --     vim.g.rustfmt_autosave = 1
+  --   end
+  -- },
+  -- {
+  --   "mfussenegger/nvim-dap",
+  -- },
+  -- {
+  --   "mrcjkb/rustaceanvim",
+  --   version = '^4', -- Recommended
+  --   ft = { 'rust' },
+  -- },
+  {
+    'saecki/crates.nvim',
+    event = { "BufRead Cargo.toml" },
+    config = function()
+      require('crates').setup()
+    end,
+  },
   {
     "folke/todo-comments.nvim",
     lazy = false,
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
       signs = true,      -- show icons in the signs column
       sign_priority = 8, -- sign priority
       -- keywords recognized as todo comments
@@ -22,7 +43,9 @@ local plugins = {
         WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
         PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
         NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
-        TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+        TEST = { icon = "󰙨 ", color = "test", alt = { "TESTING" } },
+        PASS = { icon = " ", color = "info", alt = { "PASSED" } },
+        FAIL = { icon = " ", color = "error", alt = { "FAILED" } },
       },
       gui_style = {
         fg = "NONE",         -- The gui style to use for the fg highlight group.
@@ -80,14 +103,7 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
-  {
-    "mrcjkb/rustaceanvim",
-    lazy = false,
-    version = "4", -- Recommended
-    ft = {
-      "rust"
-    },
-  },
 }
+
 
 return plugins
