@@ -40,9 +40,19 @@ basic(){
   return 0
 }
 
+locales_tzdata_config(){
+  info "Configuring locales..."
+  "$runas" dpkg-reconfigure locales
+  success "Configured locales!"
+  info "Configuring tzdata..."
+  "$runas" dpkg-reconfigure tzdata
+  success "Configured tzdata!"
+}
+
 # Execution:
 banner
 check_root
 basic
+locales_tzdata_config
 shell_setup
 dev_setup
