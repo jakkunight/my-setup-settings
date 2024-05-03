@@ -267,6 +267,32 @@ install_btop_pkg(){
   return 0
 }
 
+install_fastfetch_gh(){
+  info "Installing fastfetch..."
+  info "Downloading deb package from releases..."
+  if ! curl -fLo "fastfetch.deb" "https://github.com/fastfetch-cli/fastfetch/releases/download/2.11.2/fastfetch-linux-aarch64.deb"; then 
+    error "Couldn't download fastfetch!"
+    info "Skipping..."
+    return 1
+  fi
+  success "Downloaded installler!"
+  info "Installing..."
+  if ! "$runas" dpkg -i ./fastfetch.deb; then 
+    warning "Couldn't install fastfetch!"
+    info "Skipping..."
+    info "Cleaning up..."
+    "$runas" rm -f ./fastfetch.deb
+    return 0
+  fi
+  info "Cleaning up..."
+  "$runas" rm -f ./fastfetch.deb
+  success "Installed fastfetch!"
+  info "Configuring..."
+  echo "fastfetch" >> ~/.zshrc
+  success "Configured fastfetch!"
+  return 0
+}
+
 shell_setup(){
 	if ! install_hack_nf; then
 		return 1
@@ -299,6 +325,9 @@ shell_setup(){
 		return 1
 	fi
   if ! install_btop_pkg; then
+    return 1
+  fi
+  if ! install_fastfetch_gh; then
     return 1
   fi
 	return 0	
