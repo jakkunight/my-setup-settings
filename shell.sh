@@ -64,6 +64,14 @@ install_zsh_pkg(){
 		return 1
 	fi
 	success "Installed ZSH."
+  info "Configuring ZSH..."
+  if ! pkg zsh-syntax-highlighting zsh-autosuggestions; then 
+    warning "Couldn't install ZSH plugins."
+    info "Safely skipping..."
+  else 
+    echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+  fi
+  success "Configured ZSH."
 	return 0
 }
 
