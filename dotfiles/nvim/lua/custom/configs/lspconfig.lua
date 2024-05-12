@@ -16,7 +16,6 @@ local servers = {
   "pylyzer",
   "pyright",
   "rust_analyzer",
-  "marksman",
   "mdx_analyzer",
   "markdown_oxide",
   "yamlls",
