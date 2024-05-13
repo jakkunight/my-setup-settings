@@ -1,0 +1,6 @@
+[tools]
+bun = "latest"
+node = "lts"
+python = "latest"
+lua = "latest"
+cmake = "latest"
