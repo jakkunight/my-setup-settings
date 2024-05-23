@@ -8,10 +8,10 @@
  */
 
 configuration {
-	font:							"Hack Nerd Font 10";
+	font:							"Hack Nerd Font 12";
     show-icons:                     true;
 	icon-theme: 					"Papirus";
-    display-drun: 					"";
+    display-drun: 					" ";
     drun-display-format:            "{name}";
     disable-history:                false;
     fullscreen:                     false;
@@ -39,16 +39,16 @@ prompt {
     padding:                        10px 10px 10px 0px;
 	background-color: 				@al;
 	text-color: 					@ac;
-	font:							"Hack Nerd Font 10";
+	font:							"Hack Nerd Font 12";
 }
 
 textbox-prompt-colon {
 	padding: 						10px 15px 10px 15px;
-	font:							"Hack Nerd Font 10";
+	font:							"Hack Nerd Font 12";
 	background-color: 				@al;
 	text-color: 					@ac;
 	expand: false;
-	str: "";
+	str: " ";
 }
 
 entry {

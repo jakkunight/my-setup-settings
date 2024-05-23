@@ -5,11 +5,11 @@
 * {
     background-color:       @bg;
     text-color:             @fg;
-	font:				 	"Iosevka Nerd Font 10";
+	font:				 	"Hack Nerd Font 12";
 }
 
 window {
-    width:      			320px;
+    width:      			512px;
     padding:    			25px;
     border:					1px;
     border-radius:          0px;
