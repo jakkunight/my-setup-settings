@@ -13,7 +13,7 @@ set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font HackNerdFont 10
+font HackNerdFont 12
 
 # Hide windows borders:
 default_border none
@@ -22,8 +22,8 @@ smart_borders no_gaps
 default_floating_border none
 
 # Gaps:
-gaps inner 7 
-gaps outer 0 
+gaps inner 7
+gaps outer 0
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
