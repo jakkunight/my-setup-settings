@@ -5,6 +5,9 @@ local capabilities = configs.capabilities
 local lspconfig = require "lspconfig"
 local servers = {
   "html",
+  "htmx",
+  "bashls",
+  "astro",
   "cssls",
   "clangd",
   "astro",
@@ -13,8 +16,13 @@ local servers = {
   "pylyzer",
   "pyright",
   "rust_analyzer",
-  "marksman",
   "mdx_analyzer",
+  "markdown_oxide",
+  "yamlls",
+  "svelte",
+  "prismals",
+  "ltex",
+  "dotls",
   "tailwindcss",
   "emmet_ls"
 }

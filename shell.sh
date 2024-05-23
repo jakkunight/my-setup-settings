@@ -293,6 +293,24 @@ install_fastfetch_gh(){
   return 0
 }
 
+install_gh_cli(){
+  info "Installing GitHub CLI tool..."
+  info "Adding repos..."
+  if ! (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+&& sudo apt update \
+&& sudo apt install gh -y; then
+  error "Couldn't install GitHub CLI tool."
+  info "Safely skipping..."
+  return 0
+  fi
+  success "Installled GitHub CLI tool!"
+  return 0
+}
+
 shell_setup(){
 	if ! install_hack_nf; then
 		return 1
@@ -330,5 +348,6 @@ shell_setup(){
   if ! install_fastfetch_gh; then
     return 1
   fi
+  install_gh_cli
 	return 0	
 }
