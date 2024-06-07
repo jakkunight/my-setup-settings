@@ -1,0 +1,26 @@
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "fullscreen_mode": 1,
+    "geometry": {
+       "height": 600,
+       "width": 800,
+       "x": 0,
+       "y": 0
+    },
+    "marks": [
+       "_i3_restore_focus"
+    ],
+    "name": "jakku@nitro: ~",
+    "percent": 1,
+    "swallows": [
+       {
+       "class": "^Alacritty$",
+       "instance": "^Alacritty$",
+       "machine": "^nitro$",
+       "title": "^jakku\\@nitro\\:\\ \\~$"
+       }
+    ],
+    "type": "con"
+}

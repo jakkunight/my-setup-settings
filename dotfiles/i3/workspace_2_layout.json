@@ -1,0 +1,24 @@
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 954,
+       "width": 950,
+       "x": 0,
+       "y": 0
+    },
+    "marks": [],
+    "name": "jdholtz/i3-restore: A simple Bash and Python script to restore your i3 session — Mozilla Firefox",
+    "percent": 1,
+    "swallows": [
+       {
+       "class": "^firefox$",
+       "instance": "^Navigator$",
+       "machine": "^nitro$",
+       "title": "^jdholtz\\/i3\\-restore\\:\\ A\\ simple\\ Bash\\ and\\ Python\\ script\\ to\\ restore\\ your\\ i3\\ session\\ \\—\\ Mozilla\\ Firefox$",
+       "window_role": "^browser$"
+       }
+    ],
+    "type": "con"
+}
