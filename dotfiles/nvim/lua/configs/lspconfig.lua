@@ -30,7 +30,7 @@ local servers = {
   "nushell",
   "powershell_es",
   "pylyzer",
-  "rust_ananlyzer",
+  "rust_analyzer",
   "sqlls",
   "svelte",
   "tailwindcss",
