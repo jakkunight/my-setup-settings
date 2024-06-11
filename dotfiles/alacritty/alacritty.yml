@@ -975,6 +975,6 @@ schemes:
       white:   '#acb0d0'
 
 # Usage:
-colors: *tokyo-night
+#colors: *tokyo-night
 # "storm" uses a lighter BG color
-#colors: *tokyo-night-storm
+colors: *tokyo-night-storm
